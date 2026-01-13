@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ПУБЛИЧНЫЕ КОЛЛЕКЦИИ ДЛЯ САЙТА tipa.uz
+    match /partnerLogos/{document=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+    
+    match /news/{document=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+    
+    match /cases/{document=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+    
+    match /tags/{document=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+    
+    // КОЛЛЕКЦИЯ ДЛЯ ЗАЯВОК С САЙТА
+    // Разрешаем создание новых заявок (create), но не чтение и не обновление
+    match /deals/{dealId} {
+      allow create: if true; // Любой может создать заявку
+      allow read: if false;  // Чтение только через админ-панель
+      allow update: if false; // Обновление только через админ-панель
+      allow delete: if false; // Удаление только через админ-панель
+    }
+    
+    // Все остальные коллекции (tasks, projects и т.д.) 
+    // остаются защищенными автоматически
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "name": "Типа агентство",
+  "description": "Сайт digital-агентства Типа агентство. Системный подход, автоматизация, маркетинг и разработка.",
+  "url": "https://tipa.uz",
+  "type": "Digital Agency Website",
+  "services": [
+    {
+      "name": "Разработка сайтов и веб-приложений",
+      "slug": "web",
+      "description": "Landing Page, интернет-магазины, корпоративные порталы, веб-сервисы, AI-интеграции"
+    },
+    {
+      "name": "SMM и контент-маркетинг",
+      "slug": "smm",
+      "description": "Стратегия, контент-план, съемка фото/видео, копирайтинг, постинг, модерация, таргет"
+    },
+    {
+      "name": "Брендинг и айдентика",
+      "slug": "branding",
+      "description": "Разработка логотипов, фирменного стиля и брендбуков. Полная айдентика от визиток до упаковки"
+    },
+    {
+      "name": "Автоматизация бизнеса и CRM",
+      "slug": "automation",
+      "description": "Настройка AmoCRM, Bitrix24, телефонии, сквозной аналитики. Превращаем отдел продаж в эффективную машину"
+    },
+    {
+      "name": "Таргетированная и Контекстная Реклама",
+      "slug": "ads",
+      "description": "Instagram Ads, Google Ads, социальные сети, контекстная реклама, таргетинг, ретаргетинг"
+    },
+    {
+      "name": "SERM и управление репутацией",
+      "slug": "serm",
+      "description": "Удаление негатива, работа с отзывами, защита бренда. Поднимаем рейтинг и вытесняем негатив из поисковой выдачи"
+    },
+    {
+      "name": "SEO и GEO-продвижение",
+      "slug": "seo",
+      "description": "SEO-оптимизация и GEO-продвижение. Продвижение в Google/Yandex Maps, оптимизация сайта, AI-продвижение (GEO)"
+    }
+  ],
+  "pages": [
+    {
+      "name": "Главная",
+      "slug": "/",
+      "description": "Главная страница с обзором услуг, кейсов и новостей"
+    },
+    {
+      "name": "Услуги",
+      "slug": "/services",
+      "description": "Список всех услуг агентства"
+    },
+    {
+      "name": "Кейсы",
+      "slug": "/cases",
+      "description": "Портфолио выполненных проектов"
+    },
+    {
+      "name": "Новости",
+      "slug": "/news",
+      "description": "Блог и новости digital-индустрии"
+    },
+    {
+      "name": "О нас",
+      "slug": "/about",
+      "description": "Информация о команде и подходе агентства"
+    },
+    {
+      "name": "Контакты",
+      "slug": "/contact",
+      "description": "Контактная информация и форма обратной связи"
+    },
+    {
+      "name": "Политика конфиденциальности",
+      "slug": "/privacy-policy",
+      "description": "Политика обработки персональных данных"
+    }
+  ],
+  "features": [
+    "Многоязычность (RU, UZ, EN)",
+    "Динамический контент из Firebase Firestore",
+    "SEO-оптимизация (meta теги, Open Graph, Twitter Cards, JSON-LD)",
+    "Аналитика (Yandex.Metrika, Google Tag Manager, Meta Pixel)",
+    "UTM-трекинг",
+    "Адаптивный дизайн",
+    "Быстрая загрузка (PageSpeed оптимизация)"
+  ],
+  "tech": {
+    "framework": "React 19",
+    "router": "React Router DOM 7",
+    "backend": "Firebase Firestore",
+    "build": "Vite 6",
+    "language": "TypeScript",
+    "styling": "Tailwind CSS"
+  },
+  "contact": {
+    "phone": "+998 88 800 05 49",
+    "email": "tipaagentstvo@gmail.com",
+    "telegram": "https://t.me/tipa_agency",
+    "instagram": "https://www.instagram.com/tipa_agency/",
+    "address": "г. Ташкент, Юнусабадский район, Кашкар махалла, Ц4 квартал, дом 15, квартира 25"
+  },
+  "registration": {
+    "number": "6952622",
+    "date": "11.06.2025"
+  }
+}
