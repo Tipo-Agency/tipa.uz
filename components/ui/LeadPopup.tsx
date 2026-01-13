@@ -152,7 +152,7 @@ export const LeadPopup: React.FC = () => {
       const firstName = nameParts[0] || '';
       const lastName = nameParts.slice(1).join(' ') || '';
 
-      await createLead({
+      const leadId = await createLead({
         firstName: firstName,
         lastName: lastName,
         phone: formState.phone.trim(),
@@ -161,11 +161,19 @@ export const LeadPopup: React.FC = () => {
         sourceSection: sourceSection || 'unknown',
       });
 
-      // Track form submission
-      trackFormSubmit('lead_form', sourceSection || 'unknown', {
-        phone_country_code: formState.phoneCountryCode,
-        has_task: !!formState.task.trim()
-      });
+      // Track form submission (не блокируем успех формы, если аналитика упадет)
+      try {
+        trackFormSubmit('lead_form', sourceSection || 'unknown', {
+          phone_country_code: formState.phoneCountryCode,
+          has_task: !!formState.task.trim(),
+          lead_id: leadId
+        });
+      } catch (analyticsError) {
+        // Логируем ошибку аналитики, но не блокируем успех формы
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('⚠️ Analytics tracking failed:', analyticsError);
+        }
+      }
 
       setIsSubmitting(false);
       setIsSuccess(true);
@@ -181,9 +189,24 @@ export const LeadPopup: React.FC = () => {
         closeModal();
         setIsSuccess(false);
       }, 3000);
-    } catch (err) {
-      console.error('Error submitting lead:', err);
-      setError('Произошла ошибка при отправке. Попробуйте позже.');
+    } catch (err: any) {
+      console.error('❌ Error submitting lead:', err);
+      
+      // Более детальное сообщение об ошибке для пользователя
+      let errorMessage = t('contact.error_generic');
+      
+      if (err?.code === 'permission-denied') {
+        errorMessage = t('contact.error_permission') || 'Ошибка доступа. Проверьте настройки безопасности.';
+      } else if (err?.code === 'unavailable') {
+        errorMessage = t('contact.error_network') || 'Проблема с сетью. Проверьте подключение к интернету.';
+      } else if (err?.message) {
+        // В dev режиме показываем детальную ошибку
+        if (process.env.NODE_ENV === 'development') {
+          errorMessage = `Ошибка: ${err.message}`;
+        }
+      }
+      
+      setError(errorMessage);
       setIsSubmitting(false);
     }
   };

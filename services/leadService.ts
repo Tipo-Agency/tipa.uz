@@ -57,8 +57,25 @@ export async function createLead(data: Omit<LeadData, 'createdAt'>): Promise<str
     }
     
     return docRef.id;
-  } catch (error) {
+  } catch (error: any) {
+    // Детальное логирование ошибки для диагностики
     console.error('❌ Error creating lead:', error);
+    
+    if (error?.code) {
+      console.error('   Error code:', error.code);
+    }
+    if (error?.message) {
+      console.error('   Error message:', error.message);
+    }
+    if (error?.stack) {
+      console.error('   Stack trace:', error.stack);
+    }
+    
+    // Проверяем, что db инициализирован
+    if (!db) {
+      console.error('   ⚠️ Firestore db is null! Check firebase.ts initialization.');
+    }
+    
     throw error;
   }
 }

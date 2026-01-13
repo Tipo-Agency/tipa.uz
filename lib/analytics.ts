@@ -95,12 +95,26 @@ function trackMetaPixel(eventName: string, params?: Record<string, any>) {
       'view_case': 'ViewContent',
       'view_news': 'ViewContent',
       'view_service': 'ViewContent',
+      'scroll_50': 'ViewContent',
+      'scroll_90': 'ViewContent',
     };
     
-    const metaEvent = metaEventMap[eventName] || 'CustomEvent';
-    (window as any).fbq('track', metaEvent, params || {});
+    const metaEvent = metaEventMap[eventName];
+    
+    // Если событие есть в мапе, используем стандартное событие
+    if (metaEvent) {
+      (window as any).fbq('track', metaEvent, params || {});
+    } else {
+      // Для кастомных событий используем trackCustom с обязательным параметром event
+      (window as any).fbq('trackCustom', eventName, {
+        event: eventName,
+        ...(params || {})
+      });
+    }
   } catch (error) {
-    console.error('Meta Pixel tracking error:', error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Meta Pixel tracking error:', error);
+    }
   }
 }
 

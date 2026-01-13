@@ -23,9 +23,15 @@ try {
   db = getFirestore(app);
   auth = getAuth(app);
   
+  // Проверяем, что db действительно инициализирован
+  if (!db) {
+    throw new Error('Firestore db is null after initialization');
+  }
+  
   if (process.env.NODE_ENV === 'development') {
     console.log("✅ Firebase initialized successfully");
     console.log("📋 Project ID:", firebaseConfig.projectId);
+    console.log("📋 Firestore db:", db ? 'initialized' : 'null');
   }
   
   // Опционально: автоматическая анонимная аутентификация
@@ -40,7 +46,10 @@ try {
   });
   */
 } catch (error) {
-  console.error("❌ Firebase initialization failed, falling back to static data.", error);
+  console.error("❌ Firebase initialization failed:", error);
+  // В продакшене db останется null, что вызовет ошибку в assertDb()
+  db = null;
+  auth = null;
 }
 
 export { db, auth };

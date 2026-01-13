@@ -181,6 +181,9 @@ const translations: Record<string, LocalizedString> = {
   'contact.success_title': { ru: 'Принято!', uz: 'Qabul qilindi!', en: 'Received!' },
   'contact.success_text': { ru: 'Скоро свяжемся.', uz: 'Tez orada bog\'lanamiz.', en: 'We will contact you soon.' },
   'contact.send_more': { ru: 'Еще одна заявка', uz: 'Yana bitta ariza', en: 'Another request' },
+  'contact.error_generic': { ru: 'Произошла ошибка при отправке. Попробуйте позже.', uz: 'Yuborishda xatolik yuz berdi. Keyinroq urinib ko\'ring.', en: 'An error occurred while sending. Please try again later.' },
+  'contact.error_permission': { ru: 'Ошибка доступа. Проверьте настройки безопасности.', uz: 'Kirish xatosi. Xavfsizlik sozlamalarini tekshiring.', en: 'Access error. Please check security settings.' },
+  'contact.error_network': { ru: 'Проблема с сетью. Проверьте подключение к интернету.', uz: 'Tarmoq muammosi. Internet ulanishini tekshiring.', en: 'Network problem. Please check your internet connection.' },
   
   // Common UI elements
   'common.order': { ru: 'Заказать', uz: 'Buyurtma berish', en: 'Order' },
