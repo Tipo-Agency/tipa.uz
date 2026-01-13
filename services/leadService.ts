@@ -27,6 +27,20 @@ const assertDb = () => {
   return db;
 };
 
+/**
+ * Удаляет все undefined поля из объекта
+ * Firestore не поддерживает undefined значения
+ */
+function removeUndefinedFields<T extends Record<string, any>>(obj: T): Partial<T> {
+  const cleaned: any = {};
+  for (const key in obj) {
+    if (obj[key] !== undefined) {
+      cleaned[key] = obj[key];
+    }
+  }
+  return cleaned;
+}
+
 export async function createLead(data: Omit<LeadData, 'createdAt'>): Promise<string> {
   const firestore = assertDb();
   
@@ -37,14 +51,17 @@ export async function createLead(data: Omit<LeadData, 'createdAt'>): Promise<str
     // Добавляем UTM параметры к данным заявки
     const dataWithUTM = attachUTMToData(data);
     
-    const leadData: LeadData = {
+    const leadData: any = {
       ...dataWithUTM,
       phone: fullPhone, // Сохраняем полный номер с кодом страны
       createdAt: serverTimestamp(),
       status: 'new',
     };
 
-    const docRef = await addDoc(collection(firestore, 'deals'), leadData);
+    // Удаляем все undefined поля перед отправкой в Firestore
+    const cleanedLeadData = removeUndefinedFields(leadData);
+
+    const docRef = await addDoc(collection(firestore, 'deals'), cleanedLeadData);
     
     if (process.env.NODE_ENV === 'development') {
       console.log('✅ Lead created successfully with ID:', docRef.id);
