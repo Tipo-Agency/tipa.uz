@@ -47,6 +47,8 @@ const App: React.FC = () => {
       <Routes>
         {/* Redirect root to /ru */}
         <Route path="/" element={<RootRedirect />} />
+        {/* Sitemap - must be outside language routes */}
+        <Route path="sitemap.xml" element={<Sitemap />} />
         {/* Language routes */}
         <Route path=":lang" element={<Layout />}>
           <Route index element={<Home />} />
@@ -59,7 +61,6 @@ const App: React.FC = () => {
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
           <Route path="privacy" element={<PrivacyPolicy />} />
-          <Route path="sitemap.xml" element={<Sitemap />} />
           <Route path="*" element={<NotFound />} />
         </Route>
         {/* Legacy routes without language (redirect to /ru) */}

@@ -13,12 +13,20 @@ const Sitemap: React.FC = () => {
   const languages = ['ru', 'uz', 'en'];
 
   useEffect(() => {
-    // Set content type to XML
-    document.contentType = 'application/xml';
-    
     const generateSitemap = async () => {
       try {
         const { cases, news } = await getSiteData();
+        
+        // Filter only published items
+        const publishedCases = cases.filter(c => c.published !== false);
+        const publishedNews = news.filter(n => n.published !== false);
+        
+        console.log('Sitemap generation:', {
+          totalCases: cases.length,
+          publishedCases: publishedCases.length,
+          totalNews: news.length,
+          publishedNews: publishedNews.length
+        });
         
         const staticPages = [
           { path: '', priority: '1.0', changefreq: 'weekly' },
@@ -61,9 +69,9 @@ const Sitemap: React.FC = () => {
         });
 
         // Add dynamic cases for each language
-        cases.forEach((caseItem) => {
+        publishedCases.forEach((caseItem) => {
           const caseTitle = caseItem.title || caseItem.description?.replace(/<[^>]+>/g, ' ').slice(0, 50) || 'case';
-          const caseSlug = generateSlug(caseTitle, caseItem.id);
+          const caseSlug = generateSlug(caseTitle);
           languages.forEach((lang) => {
             const url = `${baseUrl}/${lang}/cases/${caseSlug}`;
             const lastmod = caseItem.createdAt 
@@ -89,8 +97,8 @@ const Sitemap: React.FC = () => {
         });
 
         // Add dynamic news for each language
-        news.forEach((newsItem) => {
-          const newsSlug = generateSlug(newsItem.title, newsItem.id);
+        publishedNews.forEach((newsItem) => {
+          const newsSlug = generateSlug(newsItem.title);
           languages.forEach((lang) => {
             const url = `${baseUrl}/${lang}/news/${newsSlug}`;
             const lastmod = newsItem.publishedAt || newsItem.createdAt
@@ -126,21 +134,28 @@ const Sitemap: React.FC = () => {
     generateSitemap();
   }, []);
 
-  // Return XML content with proper content type
+  // Set content type and return XML
   useEffect(() => {
     if (xml) {
-      // Create a blob and download or set as response
-      // For server-side, this should be handled by the server
-      // For client-side, we'll just display it
+      // Set content type header
+      const meta = document.createElement('meta');
+      meta.httpEquiv = 'Content-Type';
+      meta.content = 'application/xml; charset=utf-8';
+      document.head.appendChild(meta);
+      
+      // Replace body content with XML
+      document.body.innerHTML = `<pre style="white-space: pre-wrap; font-family: monospace;">${xml}</pre>`;
     }
   }, [xml]);
 
-  // Return XML as text (server should set Content-Type: application/xml)
-  return (
-    <div style={{ display: 'none' }}>
-      <pre>{xml || 'Loading sitemap...'}</pre>
-    </div>
-  );
+  // Return XML as text
+  if (xml) {
+    return (
+      <div dangerouslySetInnerHTML={{ __html: `<pre style="white-space: pre-wrap; font-family: monospace;">${xml}</pre>` }} />
+    );
+  }
+
+  return <div>Loading sitemap...</div>;
 };
 
 export default Sitemap;
