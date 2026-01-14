@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useLocalizedLink } from '../lib/useLocalizedLink';
+import { useLocalizedLink, getLocalizedLink } from '../lib/useLocalizedLink';
 import { SERVICES_DATA, Icons } from '../constants';
 import { Section } from '../components/ui/Section';
 import { useLanguage } from '../context/LanguageContext';
@@ -219,7 +219,7 @@ const getServiceVisual = (id: string) => {
 };
 
 const Services: React.FC = () => {
-  const { t, getLocalized } = useLanguage();
+  const { t, getLocalized, language } = useLanguage();
   const { openModal } = useModal();
 
   return (
@@ -317,7 +317,7 @@ const Services: React.FC = () => {
                             </div>
                             
                             <Link 
-                                to={useLocalizedLink(`/services/${service.id}`)}
+                                to={getLocalizedLink(`/services/${service.id}`, language)}
                                 className={`inline-flex items-center gap-3 font-display font-bold uppercase tracking-wider text-sm border-b-2 border-white/20 pb-1 hover:border-primary hover:text-primary transition-all ${service.accentColor}`}
                             >
                                 {t('common.read_more')}

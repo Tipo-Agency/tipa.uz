@@ -26,6 +26,7 @@ const NewsDetail: React.FC = () => {
   const [item, setItem] = useState<FirebaseNews | null>(null);
   const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
+  const newsLink = useLocalizedLink('/news');
 
   useEffect(() => {
     const load = async () => {
@@ -171,7 +172,7 @@ const NewsDetail: React.FC = () => {
       {/* Секция "Все новости" */}
       <section className="py-24 text-center">
         <Link
-          to={useLocalizedLink('/news')}
+          to={newsLink}
           className="inline-flex flex-col items-center group"
         >
           <span className="text-gray-500 uppercase tracking-widest text-sm mb-4">

@@ -70,6 +70,7 @@ const WebSpecialView: React.FC<{ service: typeof SERVICES_DATA[0] }> = ({ servic
   const { t, language } = useLanguage();
   const [webCases, setWebCases] = useState<CaseItem[]>([]);
   const [tagsMap, setTagsMap] = useState<Map<string, Tag>>(new Map());
+  const casesLink = useLocalizedLink('/cases');
   const [loadingCases, setLoadingCases] = useState(true);
   
   useEffect(() => {
@@ -346,7 +347,7 @@ const WebSpecialView: React.FC<{ service: typeof SERVICES_DATA[0] }> = ({ servic
        <Section>
            <div className="flex flex-col md:flex-row justify-between items-end mb-16">
                <SectionTitle title={t('service.web.facts_title')} subtitle={t('service.web.facts_subtitle')} />
-               <Link to={useLocalizedLink('/cases')} className="mb-24 hidden md:inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors uppercase tracking-widest text-sm font-bold">
+               <Link to={casesLink} className="mb-24 hidden md:inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors uppercase tracking-widest text-sm font-bold">
                     {t('common.all_cases')} <span className="text-xl">→</span>
                </Link>
            </div>

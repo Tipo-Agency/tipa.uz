@@ -5,9 +5,11 @@ import { CONTACT_INFO, Icons } from '../constants';
 import { Link } from 'react-router-dom';
 import { Seo } from '../components/ui/Seo';
 import { useLanguage } from '../context/LanguageContext';
+import { useLocalizedLink } from '../lib/useLocalizedLink';
 
 const PrivacyPolicy: React.FC = () => {
   const { t } = useLanguage();
+  const contactLink = useLocalizedLink('/contact');
   const sections = [
     {
       id: 'terms',
@@ -183,7 +185,7 @@ const PrivacyPolicy: React.FC = () => {
                       ))}
                       
                       <div className="pt-8 px-4">
-                          <Link to={useLocalizedLink('/contact')} className="inline-flex items-center gap-2 text-white font-bold text-sm border-b border-primary pb-1 hover:opacity-80 transition-opacity">
+                          <Link to={contactLink} className="inline-flex items-center gap-2 text-white font-bold text-sm border-b border-primary pb-1 hover:opacity-80 transition-opacity">
                               {t('privacy.have_questions')}
                               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                           </Link>
