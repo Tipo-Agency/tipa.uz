@@ -640,9 +640,13 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   
   // Get language from URL or default to 'ru'
   const getLanguageFromUrl = (): Language => {
-    const langFromUrl = params.lang || location.pathname.split('/')[1];
-    if (langFromUrl === 'ru' || langFromUrl === 'uz' || langFromUrl === 'en') {
-      return langFromUrl as Language;
+    try {
+      const langFromUrl = params.lang || location?.pathname?.split('/')[1];
+      if (langFromUrl === 'ru' || langFromUrl === 'uz' || langFromUrl === 'en') {
+        return langFromUrl as Language;
+      }
+    } catch (e) {
+      // Fallback if location is not available
     }
     return 'ru';
   };
@@ -651,15 +655,17 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   // Sync language with URL
   useEffect(() => {
+    if (!location) return;
     const langFromUrl = getLanguageFromUrl();
     if (langFromUrl !== language) {
       setLanguage(langFromUrl);
     }
-  }, [location.pathname, params.lang]);
+  }, [location?.pathname, params?.lang]);
 
   // Update language and URL
   const updateLanguage = (newLang: Language) => {
     setLanguage(newLang);
+    if (!location || !navigate) return;
     const pathWithoutLang = location.pathname.replace(/^\/(ru|uz|en)/, '') || '/';
     const newPath = pathWithoutLang === '/' ? `/${newLang}` : `/${newLang}${pathWithoutLang}`;
     navigate(newPath, { replace: true });

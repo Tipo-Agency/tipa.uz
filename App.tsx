@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation, Navigate, useParams } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate, useParams } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
 import Services from './pages/Services';
@@ -42,7 +42,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <BrowserRouter>
+    <>
       <ScrollToTop />
       <Routes>
         {/* Redirect root to /ru */}
@@ -73,7 +73,7 @@ const App: React.FC = () => {
         <Route path="contact" element={<Navigate to="/ru/contact" replace />} />
         <Route path="privacy" element={<Navigate to="/ru/privacy" replace />} />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 };
 
