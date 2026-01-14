@@ -11,7 +11,7 @@ export const Section: React.FC<SectionProps> = ({ children, className = '', id, 
   return (
     <section 
       id={id} 
-      className={`py-24 md:py-32 relative ${light ? 'bg-[#F4F4F9] text-dark' : 'bg-transparent text-white'} ${className}`}
+      className={`py-24 md:py-32 relative overflow-x-hidden ${light ? 'bg-[#F4F4F9] text-dark' : 'bg-transparent text-white'} ${className}`}
     >
       <div className="container mx-auto relative z-10">
         {children}

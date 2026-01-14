@@ -46,7 +46,7 @@ const About: React.FC = () => {
       {/* HERO */}
       <section className="relative pt-40 pb-20 overflow-hidden">
         {/* Background Elements */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
         
         <div className="container mx-auto px-4 relative z-10">
              <Breadcrumbs />

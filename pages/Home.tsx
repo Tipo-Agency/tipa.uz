@@ -331,7 +331,7 @@ const Home: React.FC = () => {
       </Section>
 
       {/* CTA FOOTER */}
-      <section className="py-32 relative overflow-hidden">
+      <section className="py-32 relative overflow-hidden overflow-x-hidden">
           <div className="container mx-auto px-4 text-center relative z-10">
               <h2 className="font-display font-bold text-5xl md:text-8xl text-white mb-8 tracking-tighter uppercase">
                   {t('home.cta_title')} <br/>

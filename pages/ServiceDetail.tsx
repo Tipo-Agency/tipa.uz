@@ -149,7 +149,7 @@ const WebSpecialView: React.FC<{ service: typeof SERVICES_DATA[0] }> = ({ servic
        <section className="relative pt-32 pb-20 bg-dark overflow-hidden min-h-[85vh] flex flex-col justify-center">
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-screen"></div>
           <div className="absolute inset-0 bg-gradient-to-b from-dark via-dark/90 to-dark"></div>
-          <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-primary/20 blur-[120px] rounded-full animate-pulse-glow"></div>
+          <div className="absolute top-1/4 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-primary/20 blur-[120px] rounded-full animate-pulse-glow"></div>
 
           <div className="container mx-auto px-4 relative z-10">
               <Breadcrumbs />
@@ -497,7 +497,7 @@ const SmmSpecialView: React.FC<{ service: typeof SERVICES_DATA[1] }> = ({ servic
          )}
          <section className="relative pt-24 pb-20 bg-dark overflow-hidden min-h-[75vh] flex flex-col justify-center">
             <div className="absolute inset-0 bg-gradient-to-b from-dark via-[#1a0b2e] to-dark"></div>
-            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent-turquoise/10 rounded-full blur-[150px] pointer-events-none"></div>
+            <div className="absolute top-0 right-0 w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-accent-turquoise/10 rounded-full blur-[150px] pointer-events-none"></div>
             <div className="container mx-auto px-4 relative z-10">
                 <Breadcrumbs />
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mt-8">
@@ -871,7 +871,7 @@ const BrandingSpecialView: React.FC<{ service: typeof SERVICES_DATA[2] }> = ({ s
             <section className="relative pt-32 pb-20 bg-dark overflow-hidden min-h-[85vh] flex flex-col justify-center">
                 <div className="absolute inset-0 bg-[#0f0518]"></div>
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] opacity-20"></div>
-                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent-amethyst/20 rounded-full blur-[120px] animate-pulse-glow"></div>
+                <div className="absolute top-0 right-0 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-accent-amethyst/20 rounded-full blur-[120px] animate-pulse-glow"></div>
 
                 <div className="container mx-auto px-4 relative z-10">
                     <Breadcrumbs />
@@ -1240,7 +1240,7 @@ const AdsSpecialView: React.FC<{ service: typeof SERVICES_DATA[6] }> = ({ servic
             {/* HERO */}
             <section className="relative pt-32 pb-20 bg-dark overflow-hidden min-h-[85vh] flex flex-col justify-center">
                 <div className="absolute inset-0 bg-[#080b14]"></div>
-                <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent-sky/10 rounded-full blur-[150px] pointer-events-none"></div>
+                <div className="absolute top-0 right-0 w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-accent-sky/10 rounded-full blur-[150px] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
                     <Breadcrumbs />
                     <div className="flex flex-col lg:flex-row gap-16 items-center">
@@ -1615,7 +1615,7 @@ const SermSpecialView: React.FC<{ service: typeof SERVICES_DATA[5] }> = ({ servi
 
                     {/* ABSTRACT RADAR VISUAL - Fixed to be round */}
                     <div className="relative flex items-center justify-center h-[450px]">
-                        <div className="relative w-[400px] h-[400px]">
+                        <div className="relative w-full max-w-[400px] h-[400px] mx-auto">
                             <div className="absolute inset-0 border border-white/5 rounded-full"></div>
                             <div className="absolute inset-[15%] border border-white/5 rounded-full"></div>
                             <div className="absolute inset-[30%] border border-white/5 rounded-full"></div>
@@ -1694,7 +1694,7 @@ const SeoSpecialView: React.FC<{ service: typeof SERVICES_DATA[4] }> = ({ servic
             {/* HERO */}
             <section className="relative pt-32 pb-20 bg-dark overflow-hidden min-h-[85vh] flex flex-col justify-center">
                 <div className="absolute inset-0 bg-[#05110e]"></div>
-                <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent-mint/10 rounded-full blur-[150px] pointer-events-none"></div>
+                <div className="absolute top-0 right-0 w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-accent-mint/10 rounded-full blur-[150px] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
                     <Breadcrumbs />
                     <div className="flex flex-col lg:flex-row gap-16 items-center">

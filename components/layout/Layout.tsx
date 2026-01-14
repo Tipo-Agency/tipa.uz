@@ -142,7 +142,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-dark-surface border-t border-white/5 pt-12 pb-8 relative overflow-hidden">
       {/* Footer background glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full pointer-events-none"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-primary/10 blur-[120px] rounded-full pointer-events-none"></div>
 
       <div className="container mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 mb-10">
@@ -238,9 +238,9 @@ const Footer: React.FC = () => {
 
 const Layout: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col font-body bg-dark text-white selection:bg-primary selection:text-white">
+    <div className="min-h-screen flex flex-col font-body bg-dark text-white selection:bg-primary selection:text-white overflow-x-hidden">
       <Header />
-      <main className="flex-grow">
+      <main className="flex-grow overflow-x-hidden">
         <Outlet />
       </main>
       <Footer />
