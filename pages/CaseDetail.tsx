@@ -21,17 +21,13 @@ const CaseDetail: React.FC = () => {
       if (!slug) return;
       try {
         const { cases, tags } = await getSiteData();
-        // Extract ID from slug (format: title-slug-id)
-        const idFromSlug = slug.split('-').pop() || slug;
-        // Try to find by ID first (for backward compatibility)
-        let foundCase = cases.find((c) => c.id === idFromSlug) || null;
-        // If not found by ID, try to find by matching slug
-        if (!foundCase) {
-          foundCase = cases.find((c) => {
-            const caseSlug = generateSlug(c.title || c.description?.replace(/<[^>]+>/g, ' ').slice(0, 50) || 'case', c.id);
-            return caseSlug === slug;
-          }) || null;
-        }
+        // Find by matching slug (without ID)
+        const foundCase = cases.find((c) => {
+          const caseTitle = c.title || c.description?.replace(/<[^>]+>/g, ' ').slice(0, 50) || 'case';
+          const caseSlug = generateSlug(caseTitle);
+          return caseSlug === slug;
+        }) || null;
+        
         setCaseItem(foundCase);
         setTags(tags);
         

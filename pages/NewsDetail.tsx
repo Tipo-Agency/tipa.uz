@@ -32,17 +32,12 @@ const NewsDetail: React.FC = () => {
       if (!slug) return;
       try {
         const { news, tags } = await getSiteData();
-        // Extract ID from slug (format: title-slug-id)
-        const idFromSlug = slug.split('-').pop() || slug;
-        // Try to find by ID first (for backward compatibility)
-        let foundNews = news.find((n) => n.id === idFromSlug) || null;
-        // If not found by ID, try to find by matching slug
-        if (!foundNews) {
-          foundNews = news.find((n) => {
-            const newsSlug = generateSlug(n.title, n.id);
-            return newsSlug === slug;
-          }) || null;
-        }
+        // Find by matching slug (without ID)
+        const foundNews = news.find((n) => {
+          const newsSlug = generateSlug(n.title);
+          return newsSlug === slug;
+        }) || null;
+        
         setItem(foundNews);
         setTags(tags);
         

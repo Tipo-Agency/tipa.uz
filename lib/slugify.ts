@@ -47,13 +47,11 @@ export function slugify(text: string): string {
 }
 
 /**
- * Generate slug from title with ID fallback for uniqueness
+ * Generate slug from title (without ID)
  * @param title - Title text
- * @param id - Item ID for fallback
- * @returns Slug with ID suffix if needed
+ * @param id - Item ID (not used, kept for backward compatibility)
+ * @returns Slug without ID
  */
-export function generateSlug(title: string, id: string): string {
-  const baseSlug = slugify(title);
-  // Add ID suffix to ensure uniqueness
-  return `${baseSlug}-${id}`;
+export function generateSlug(title: string, id?: string): string {
+  return slugify(title);
 }
