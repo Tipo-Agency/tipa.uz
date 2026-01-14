@@ -516,10 +516,6 @@ const translations: Record<string, LocalizedString> = {
   'service.ads.scale_title': { ru: 'Scale', uz: 'Scale', en: 'Scale' },
   'service.ads.scale_features': { ru: 'Все каналы трафика\nСквозная аналитика\nСтратегия масштабирования\nОтдельный проджект\nЕжедневный контроль\nДизайнер в штате', uz: 'Barcha trafik kanallari\nKesib o\'tuvchi analitika\nMasshtablash strategiyasi\nAlohida loyiha menejeri\nKunlik nazorat\nDizayner shtatda', en: 'All traffic channels\nEnd-to-end analytics\nScaling strategy\nDedicated project manager\nDaily control\nIn-house designer' },
   
-  // Service Detail - Cases & News pages
-  'cases.page_title': { ru: 'Наши проекты', uz: 'Bizning loyihalarimiz', en: 'Our Projects' },
-  'cases.intro': { ru: 'Реальные кейсы, которые ведутся через админ-панель и обновляются из Firebase.', uz: 'Admin-panel orqali boshqariladigan va Firebase dan yangilanadigan haqiqiy keyslar.', en: 'Real cases managed through admin panel and updated from Firebase.' },
-  
   // Service Detail - Web pricing
   'service.web.corporate_pricing_title': { ru: 'Корпоративный', uz: 'Korporativ', en: 'Corporate' },
   
