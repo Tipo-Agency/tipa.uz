@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Language, LocalizedString } from '../types';
 
 interface LanguageContextType {
@@ -637,7 +638,36 @@ const translations: Record<string, LocalizedString> = {
 export const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('ru');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = useParams<{ lang?: string }>();
+  
+  // Get language from URL or default to 'ru'
+  const getLanguageFromUrl = (): Language => {
+    const langFromUrl = params.lang || location.pathname.split('/')[1];
+    if (langFromUrl === 'ru' || langFromUrl === 'uz' || langFromUrl === 'en') {
+      return langFromUrl as Language;
+    }
+    return 'ru';
+  };
+
+  const [language, setLanguage] = useState<Language>(getLanguageFromUrl());
+
+  // Sync language with URL
+  useEffect(() => {
+    const langFromUrl = getLanguageFromUrl();
+    if (langFromUrl !== language) {
+      setLanguage(langFromUrl);
+    }
+  }, [location.pathname, params.lang]);
+
+  // Update language and URL
+  const updateLanguage = (newLang: Language) => {
+    setLanguage(newLang);
+    const pathWithoutLang = location.pathname.replace(/^\/(ru|uz|en)/, '') || '/';
+    const newPath = pathWithoutLang === '/' ? `/${newLang}` : `/${newLang}${pathWithoutLang}`;
+    navigate(newPath, { replace: true });
+  };
 
   const t = (key: string): string => {
     return translations[key]?.[language] || key;
@@ -649,7 +679,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t, getLocalized }}>
+    <LanguageContext.Provider value={{ language, setLanguage: updateLanguage, t, getLocalized }}>
       {children}
     </LanguageContext.Provider>
   );

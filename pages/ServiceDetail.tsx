@@ -9,6 +9,7 @@ import { FAQSection } from '../components/ui/FAQ';
 import { Seo } from '../components/ui/Seo';
 import { getSiteData, CaseItem, Tag } from '../services/siteDataService';
 import { trackServiceView, trackCTAClick } from '../lib/analytics';
+import { useLocalizedLink, getLocalizedLink } from '../lib/useLocalizedLink';
 
 // --- Shared Components ---
 
@@ -66,7 +67,7 @@ const PricingCard: React.FC<{
 // --- 1. WEB SPECIAL VIEW ---
 const WebSpecialView: React.FC<{ service: typeof SERVICES_DATA[0] }> = ({ service }) => {
   const { openModal } = useModal();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [webCases, setWebCases] = useState<CaseItem[]>([]);
   const [tagsMap, setTagsMap] = useState<Map<string, Tag>>(new Map());
   const [loadingCases, setLoadingCases] = useState(true);
@@ -345,7 +346,7 @@ const WebSpecialView: React.FC<{ service: typeof SERVICES_DATA[0] }> = ({ servic
        <Section>
            <div className="flex flex-col md:flex-row justify-between items-end mb-16">
                <SectionTitle title={t('service.web.facts_title')} subtitle={t('service.web.facts_subtitle')} />
-               <Link to="/cases" className="mb-24 hidden md:inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors uppercase tracking-widest text-sm font-bold">
+               <Link to={useLocalizedLink('/cases')} className="mb-24 hidden md:inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors uppercase tracking-widest text-sm font-bold">
                     {t('common.all_cases')} <span className="text-xl">→</span>
                </Link>
            </div>
@@ -358,7 +359,7 @@ const WebSpecialView: React.FC<{ service: typeof SERVICES_DATA[0] }> = ({ servic
                        const descriptionText = item.description?.replace(/<[^>]+>/g, ' ').slice(0, 100).trim() + '…' || '';
                        
                        return (
-                           <Link to={`/cases/${item.id}`} key={item.id} className="group block bg-dark-surface rounded-[2rem] overflow-hidden border border-white/5 hover:border-white/20 transition-colors">
+                           <Link to={getLocalizedLink(`/cases/${item.id}`, language)} key={item.id} className="group block bg-dark-surface rounded-[2rem] overflow-hidden border border-white/5 hover:border-white/20 transition-colors">
                                <div className="relative aspect-[4/3] overflow-hidden">
                                    {item.imageUrl ? (
                                        <img 
@@ -727,7 +728,7 @@ const SmmSpecialView: React.FC<{ service: typeof SERVICES_DATA[1] }> = ({ servic
                          const descriptionText = caseItem.description?.replace(/<[^>]+>/g, ' ').slice(0, 100).trim() + '…' || '';
                          
                          return (
-                             <Link key={caseItem.id} to={`/cases/${caseItem.id}`} className="group">
+                             <Link key={caseItem.id} to={getLocalizedLink(`/cases/${caseItem.id}`, language)} className="group">
                                  <div className="relative aspect-[16/10] overflow-hidden rounded-2xl mb-4">
                                      {caseItem.imageUrl ? (
                                          <img 

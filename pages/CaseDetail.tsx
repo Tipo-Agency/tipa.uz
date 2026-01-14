@@ -6,6 +6,7 @@ import { Seo } from '../components/ui/Seo';
 import { getSiteData, CaseItem, Tag } from '../services/siteDataService';
 import { useLanguage } from '../context/LanguageContext';
 import { trackCaseView } from '../lib/analytics';
+import { useLocalizedLink } from '../lib/useLocalizedLink';
 
 const CaseDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -169,7 +170,7 @@ const CaseDetail: React.FC = () => {
 
       <section className="py-24 text-center">
         <Link
-          to="/cases"
+          to={useLocalizedLink('/cases')}
           className="inline-flex flex-col items-center group"
         >
           <span className="text-gray-500 uppercase tracking-widest text-sm mb-4">

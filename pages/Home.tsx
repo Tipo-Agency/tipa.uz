@@ -11,6 +11,7 @@ import { NewsCard, NewsCardItem } from '../components/ui/NewsCard';
 import { getSiteData, News as FirebaseNews, Tag, CaseItem } from '../services/siteDataService';
 import { Seo } from '../components/ui/Seo';
 import { trackCTAClick } from '../lib/analytics';
+import { useLocalizedLink, getLocalizedLink } from '../lib/useLocalizedLink';
 
 const formatDate = (iso?: string) => {
   if (!iso) return '';
@@ -31,11 +32,14 @@ const buildExcerpt = (item: FirebaseNews): string => {
 };
 
 const Home: React.FC = () => {
-  const { t, getLocalized } = useLanguage();
+  const { t, getLocalized, language } = useLanguage();
   const { openModal } = useModal();
   const [latestNews, setLatestNews] = useState<NewsCardItem[]>([]);
   const [latestCases, setLatestCases] = useState<CaseItem[]>([]);
   const [tagsMap, setTagsMap] = useState<Map<string, Tag>>(new Map());
+  const servicesLink = useLocalizedLink('/services');
+  const casesLink = useLocalizedLink('/cases');
+  const newsLink = useLocalizedLink('/news');
 
   useEffect(() => {
     const load = async () => {
@@ -156,9 +160,11 @@ const Home: React.FC = () => {
         />
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {SERVICES_DATA.slice(0, 7).map((service, index) => (
+            {SERVICES_DATA.slice(0, 7).map((service, index) => {
+                const serviceLink = getLocalizedLink(`/services/${service.id}`, language);
+                return (
                 <Link 
-                    to={`/services/${service.id}`}
+                    to={serviceLink}
                     key={service.id} 
                     className={`group bg-dark-surface border border-white/5 rounded-3xl p-8 md:p-12 relative overflow-hidden hover:border-primary/50 transition-colors ${index === 0 || index === 3 ? 'md:col-span-2' : ''}`}
                 >
@@ -185,11 +191,12 @@ const Home: React.FC = () => {
                         </div>
                     </div>
                 </Link>
-            ))}
+                );
+            })}
         </div>
         
         <div className="mt-12 text-center">
-            <Link to="/services" className="inline-block px-8 py-4 border border-white/10 rounded-full hover:bg-white hover:text-dark transition-all font-display font-medium text-sm tracking-widest uppercase">
+            <Link to={servicesLink} className="inline-block px-8 py-4 border border-white/10 rounded-full hover:bg-white hover:text-dark transition-all font-display font-medium text-sm tracking-widest uppercase">
                 {t('home.all_services')}
             </Link>
         </div>
@@ -251,7 +258,7 @@ const Home: React.FC = () => {
       <Section>
         <div className="flex flex-col md:flex-row justify-between items-end mb-16">
             <SectionTitle title={t('home.cases_title')} />
-            <Link to="/cases" className="mb-24 hidden md:inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors uppercase tracking-widest text-sm font-bold">
+            <Link to={casesLink} className="mb-24 hidden md:inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors uppercase tracking-widest text-sm font-bold">
                 {t('home.cases_link')} <span className="text-xl">→</span>
             </Link>
         </div>
@@ -262,10 +269,11 @@ const Home: React.FC = () => {
                     const caseTags = item.tags?.map((id) => tagsMap.get(id)).filter(Boolean) as Tag[] || [];
                     const descriptionText = item.description?.replace(/<[^>]+>/g, ' ').slice(0, 200).trim() + '…' || '';
                     
+                    const caseLink = getLocalizedLink(`/cases/${item.id}`, language);
                     return (
                         <Link 
                             key={item.id} 
-                            to={`/cases/${item.id}`}
+                            to={caseLink}
                             className={`flex flex-col ${index % 2 === 1 ? 'md:flex-row-reverse' : 'md:flex-row'} gap-12 md:gap-24 items-center group block`}
                         >
                             <div className="w-full md:w-3/5">
@@ -319,7 +327,7 @@ const Home: React.FC = () => {
       <Section className="bg-[#0A0A0A]">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16">
               <SectionTitle title={t('home.news_title')} />
-              <Link to="/news" className="mb-24 hidden md:inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors uppercase tracking-widest text-sm font-bold">
+              <Link to={newsLink} className="mb-24 hidden md:inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors uppercase tracking-widest text-sm font-bold">
                   {t('home.news_link')} <span className="text-xl">→</span>
               </Link>
           </div>

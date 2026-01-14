@@ -6,6 +6,7 @@ import { getSiteData, News as FirebaseNews, Tag } from '../services/siteDataServ
 import { Seo } from '../components/ui/Seo';
 import { useLanguage } from '../context/LanguageContext';
 import { trackNewsView } from '../lib/analytics';
+import { useLocalizedLink } from '../lib/useLocalizedLink';
 
 const formatDate = (iso?: string) => {
   if (!iso) return '';
@@ -164,7 +165,7 @@ const NewsDetail: React.FC = () => {
       {/* Секция "Все новости" */}
       <section className="py-24 text-center">
         <Link
-          to="/news"
+          to={useLocalizedLink('/news')}
           className="inline-flex flex-col items-center group"
         >
           <span className="text-gray-500 uppercase tracking-widest text-sm mb-4">

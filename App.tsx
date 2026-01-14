@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, Navigate, useParams } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
 import Services from './pages/Services';
@@ -12,8 +12,14 @@ import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import NotFound from './pages/NotFound';
+import Sitemap from './pages/Sitemap';
 import { trackPageView, initScrollTracking } from './lib/analytics';
 import { initUTMTracking } from './lib/utmTracking';
+
+// Redirect root to /ru
+const RootRedirect = () => {
+  return <Navigate to="/ru" replace />;
+};
 
 // Scroll to top on route change and track page views
 const ScrollToTop = () => {
@@ -36,10 +42,13 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<Layout />}>
+        {/* Redirect root to /ru */}
+        <Route path="/" element={<RootRedirect />} />
+        {/* Language routes */}
+        <Route path=":lang" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="services" element={<Services />} />
           <Route path="services/:id" element={<ServiceDetail />} />
@@ -50,11 +59,31 @@ const App: React.FC = () => {
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
           <Route path="privacy" element={<PrivacyPolicy />} />
+          <Route path="sitemap.xml" element={<Sitemap />} />
           <Route path="*" element={<NotFound />} />
         </Route>
+        {/* Legacy routes without language (redirect to /ru) */}
+        <Route path="services" element={<Navigate to="/ru/services" replace />} />
+        <Route path="services/:id" element={<NavigateWithLang to="/ru/services/:id" />} />
+        <Route path="cases" element={<Navigate to="/ru/cases" replace />} />
+        <Route path="cases/:id" element={<NavigateWithLang to="/ru/cases/:id" />} />
+        <Route path="news" element={<Navigate to="/ru/news" replace />} />
+        <Route path="news/:id" element={<NavigateWithLang to="/ru/news/:id" />} />
+        <Route path="about" element={<Navigate to="/ru/about" replace />} />
+        <Route path="contact" element={<Navigate to="/ru/contact" replace />} />
+        <Route path="privacy" element={<Navigate to="/ru/privacy" replace />} />
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   );
+};
+
+// Helper component to redirect with params
+const NavigateWithLang: React.FC<{ to: string }> = ({ to }) => {
+  const params = useParams();
+  const path = Object.entries(params).reduce((acc, [key, value]) => {
+    return acc.replace(`:${key}`, value || '');
+  }, to);
+  return <Navigate to={path} replace />;
 };
 
 export default App;

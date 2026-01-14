@@ -7,9 +7,10 @@ import { Seo } from '../components/ui/Seo';
 import { useModal } from '../context/ModalContext';
 import { getSiteData, CaseItem, Tag } from '../services/siteDataService';
 import { trackCTAClick } from '../lib/analytics';
+import { useLocalizedLink, getLocalizedLink } from '../lib/useLocalizedLink';
 
 const Cases: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { openModal } = useModal();
   const [cases, setCases] = useState<CaseItem[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
@@ -85,9 +86,10 @@ const Cases: React.FC = () => {
                 ?.map((id) => tagsMap.get(id))
                 .filter(Boolean) as Tag[];
 
+              const caseLink = getLocalizedLink(`/cases/${item.id}`, language);
               return (
                 <Link
-                  to={`/cases/${item.id}`}
+                  to={caseLink}
                   key={item.id}
                   className="group bg-dark-surface border border-white/5 rounded-2xl overflow-hidden hover:border-primary/40 transition-all flex flex-col"
                 >

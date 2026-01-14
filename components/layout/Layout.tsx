@@ -8,14 +8,16 @@ import { CookieConsent } from '../ui/CookieConsent';
 import { LeadPopup } from '../ui/LeadPopup';
 import { useModal } from '../../context/ModalContext';
 import { trackSocialClick, trackCTAClick } from '../../lib/analytics';
+import { useLocalizedLink } from '../../lib/useLocalizedLink';
 
 const NavLink: React.FC<{ to: string; children: React.ReactNode; onClick?: () => void }> = ({ to, children, onClick }) => {
   const location = useLocation();
-  const isActive = location.pathname === to || (to !== '/' && location.pathname.startsWith(to));
+  const localizedTo = useLocalizedLink(to);
+  const isActive = location.pathname === localizedTo || (localizedTo !== '/' && location.pathname.startsWith(localizedTo));
   
   return (
     <Link 
-      to={to} 
+      to={localizedTo} 
       onClick={onClick}
       className={`text-sm font-medium tracking-wide transition-all duration-300 ${isActive ? 'text-white' : 'text-gray-400 hover:text-white'}`}
     >
@@ -53,6 +55,7 @@ const Header: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const { t } = useLanguage();
   const { openModal } = useModal();
+  const homeLink = useLocalizedLink('/');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,7 +69,7 @@ const Header: React.FC = () => {
     <>
       <header className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${scrolled ? 'bg-dark/80 backdrop-blur-lg border-b border-white/5 py-4' : 'bg-transparent py-6'}`}>
         <div className="container mx-auto flex items-center justify-between">
-          <Link to={RoutePath.HOME} className="flex items-center gap-2 group relative z-50">
+          <Link to={homeLink} className="flex items-center gap-2 group relative z-50">
             <Logo className="h-8 md:h-10 w-auto transition-transform group-hover:scale-105" white={true} />
           </Link>
 
@@ -139,6 +142,13 @@ const Header: React.FC = () => {
 
 const Footer: React.FC = () => {
   const { t } = useLanguage();
+  const homeLink = useLocalizedLink('/');
+  const servicesLink = useLocalizedLink('/services');
+  const casesLink = useLocalizedLink('/cases');
+  const newsLink = useLocalizedLink('/news');
+  const aboutLink = useLocalizedLink('/about');
+  const privacyLink = useLocalizedLink('/privacy');
+  
   return (
     <footer className="bg-dark-surface border-t border-white/5 pt-12 pb-8 relative overflow-hidden">
       {/* Footer background glow */}
@@ -147,7 +157,7 @@ const Footer: React.FC = () => {
       <div className="container mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 mb-10">
           <div className="md:col-span-5">
-            <Link to="/" className="mb-6 block">
+            <Link to={homeLink} className="mb-6 block">
               <Logo className="h-10 w-auto" white />
             </Link>
             <h3 className="font-display font-bold text-xl md:text-2xl leading-tight mb-4 max-w-md">
@@ -158,10 +168,10 @@ const Footer: React.FC = () => {
           <div className="md:col-span-2 md:col-start-7">
             <h4 className="font-display font-bold text-xs uppercase tracking-widest text-gray-500 mb-4">{t('footer.nav')}</h4>
             <ul className="space-y-3 text-sm text-gray-300">
-              <li><Link to="/services" className="hover:text-primary transition-colors">{t('nav.services')}</Link></li>
-              <li><Link to="/cases" className="hover:text-primary transition-colors">{t('nav.cases')}</Link></li>
-              <li><Link to="/news" className="hover:text-primary transition-colors">{t('nav.news')}</Link></li>
-              <li><Link to="/about" className="hover:text-primary transition-colors">{t('nav.about')}</Link></li>
+              <li><Link to={servicesLink} className="hover:text-primary transition-colors">{t('nav.services')}</Link></li>
+              <li><Link to={casesLink} className="hover:text-primary transition-colors">{t('nav.cases')}</Link></li>
+              <li><Link to={newsLink} className="hover:text-primary transition-colors">{t('nav.news')}</Link></li>
+              <li><Link to={aboutLink} className="hover:text-primary transition-colors">{t('nav.about')}</Link></li>
             </ul>
           </div>
 
@@ -225,7 +235,7 @@ const Footer: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center text-xs text-gray-600 gap-4">
             <p>&copy; {new Date().getFullYear()} Типа агентство. Все права защищены.</p>
             <div className="flex gap-6">
-              <Link to="/privacy" className="hover:text-gray-400 cursor-pointer transition-colors">
+              <Link to={privacyLink} className="hover:text-gray-400 cursor-pointer transition-colors">
                   {t('footer.legal_privacy')}
               </Link>
             </div>

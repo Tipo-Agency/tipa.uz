@@ -61,6 +61,31 @@ export const Seo: React.FC<SeoProps> = ({
     }
     canonical.setAttribute('href', url);
 
+    // Hreflang tags for multilingual SEO
+    const languages = ['ru', 'uz', 'en'];
+    const currentPath = location.pathname.replace(/^\/(ru|uz|en)/, '') || '/';
+    languages.forEach((lang) => {
+      const langUrl = `${baseUrl}/${lang}${currentPath === '/' ? '' : currentPath}`;
+      let hreflang = document.querySelector(`link[rel="alternate"][hreflang="${lang}"]`);
+      if (!hreflang) {
+        hreflang = document.createElement('link');
+        hreflang.setAttribute('rel', 'alternate');
+        hreflang.setAttribute('hreflang', lang);
+        document.head.appendChild(hreflang);
+      }
+      hreflang.setAttribute('href', langUrl);
+    });
+    // x-default hreflang
+    const defaultUrl = `${baseUrl}/ru${currentPath === '/' ? '' : currentPath}`;
+    let xDefault = document.querySelector('link[rel="alternate"][hreflang="x-default"]');
+    if (!xDefault) {
+      xDefault = document.createElement('link');
+      xDefault.setAttribute('rel', 'alternate');
+      xDefault.setAttribute('hreflang', 'x-default');
+      document.head.appendChild(xDefault);
+    }
+    xDefault.setAttribute('href', defaultUrl);
+
     // Open Graph Tags
     updateMetaTag('og:title', fullTitle, true);
     updateMetaTag('og:description', description, true);

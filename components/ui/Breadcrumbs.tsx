@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { SERVICES_DATA, CASES_DATA } from '../../constants';
+import { useLocalizedLink } from '../../lib/useLocalizedLink';
 
 interface BreadcrumbsProps {
   customTitle?: string; // Для динамических страниц (кейсы, новости)
@@ -12,9 +13,10 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ customTitle }) => {
   const { t, getLocalized } = useLanguage();
   
   // Don't show on home page
-  if (location.pathname === '/') return null;
+  if (location.pathname === '/' || location.pathname.match(/^\/(ru|uz|en)$/)) return null;
 
-  const pathnames = location.pathname.split('/').filter((x) => x);
+  // Remove language prefix from pathnames
+  const pathnames = location.pathname.split('/').filter((x) => x && x !== 'ru' && x !== 'uz' && x !== 'en');
 
   // Функция для обрезки длинного текста
   const truncateText = (text: string, maxLength: number = 40) => {
@@ -60,10 +62,11 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ customTitle }) => {
     <nav className="text-sm font-medium text-gray-500 mb-8" aria-label="Breadcrumb">
       <ol className="list-none p-0 inline-flex">
         <li className="flex items-center">
-          <Link to="/" className="hover:text-primary transition-colors">{t('breadcrumbs.home')}</Link>
+          <Link to={useLocalizedLink('/')} className="hover:text-primary transition-colors">{t('breadcrumbs.home')}</Link>
         </li>
         {pathnames.map((value, index) => {
-          const to = `/${pathnames.slice(0, index + 1).join('/')}`;
+          const path = `/${pathnames.slice(0, index + 1).join('/')}`;
+          const to = useLocalizedLink(path);
           const isLast = index === pathnames.length - 1;
           const name = getBreadcrumbName(value, index);
 
