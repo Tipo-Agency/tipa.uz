@@ -11,7 +11,7 @@ import { NewsCard, NewsCardItem } from '../components/ui/NewsCard';
 import { getSiteData, News as FirebaseNews, Tag, CaseItem } from '../services/siteDataService';
 import { Seo } from '../components/ui/Seo';
 import { trackCTAClick } from '../lib/analytics';
-import { useLocalizedLink, getLocalizedLink } from '../lib/useLocalizedLink';
+import { useLocalizedLink, getLocalizedLink, getCaseLink, getNewsLink } from '../lib/useLocalizedLink';
 
 const formatDate = (iso?: string) => {
   if (!iso) return '';
@@ -269,7 +269,7 @@ const Home: React.FC = () => {
                     const caseTags = item.tags?.map((id) => tagsMap.get(id)).filter(Boolean) as Tag[] || [];
                     const descriptionText = item.description?.replace(/<[^>]+>/g, ' ').slice(0, 200).trim() + '…' || '';
                     
-                    const caseLink = getLocalizedLink(`/cases/${item.id}`, language);
+                    const caseLink = getCaseLink(item, language);
                     return (
                         <Link 
                             key={item.id} 

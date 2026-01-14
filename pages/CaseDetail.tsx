@@ -7,9 +7,10 @@ import { getSiteData, CaseItem, Tag } from '../services/siteDataService';
 import { useLanguage } from '../context/LanguageContext';
 import { trackCaseView } from '../lib/analytics';
 import { useLocalizedLink } from '../lib/useLocalizedLink';
+import { generateSlug } from '../lib/slugify';
 
 const CaseDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const { t } = useLanguage();
   const [caseItem, setCaseItem] = useState<CaseItem | null>(null);
   const [tags, setTags] = useState<Tag[]>([]);
@@ -17,16 +18,26 @@ const CaseDetail: React.FC = () => {
 
   useEffect(() => {
     const load = async () => {
-      if (!id) return;
+      if (!slug) return;
       try {
         const { cases, tags } = await getSiteData();
-        const foundCase = cases.find((c) => c.id === id) || null;
+        // Extract ID from slug (format: title-slug-id)
+        const idFromSlug = slug.split('-').pop() || slug;
+        // Try to find by ID first (for backward compatibility)
+        let foundCase = cases.find((c) => c.id === idFromSlug) || null;
+        // If not found by ID, try to find by matching slug
+        if (!foundCase) {
+          foundCase = cases.find((c) => {
+            const caseSlug = generateSlug(c.title || c.description?.replace(/<[^>]+>/g, ' ').slice(0, 50) || 'case', c.id);
+            return caseSlug === slug;
+          }) || null;
+        }
         setCaseItem(foundCase);
         setTags(tags);
         
         // Track case view
         if (foundCase) {
-          trackCaseView(id, foundCase.title);
+          trackCaseView(foundCase.id, foundCase.title || 'Case');
         }
       } catch (e) {
         console.error('Failed to load case detail from Firestore', e);
@@ -35,7 +46,7 @@ const CaseDetail: React.FC = () => {
       }
     };
     load();
-  }, [id]);
+  }, [slug]);
 
   if (loading) {
     return <div className="h-screen flex items-center justify-center text-white">Loading…</div>;

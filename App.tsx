@@ -53,9 +53,9 @@ const App: React.FC = () => {
           <Route path="services" element={<Services />} />
           <Route path="services/:id" element={<ServiceDetail />} />
           <Route path="cases" element={<Cases />} />
-          <Route path="cases/:id" element={<CaseDetail />} />
+          <Route path="cases/:slug" element={<CaseDetail />} />
           <Route path="news" element={<News />} />
-          <Route path="news/:id" element={<NewsDetail />} />
+          <Route path="news/:slug" element={<NewsDetail />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
           <Route path="privacy" element={<PrivacyPolicy />} />
@@ -66,9 +66,9 @@ const App: React.FC = () => {
         <Route path="services" element={<Navigate to="/ru/services" replace />} />
         <Route path="services/:id" element={<NavigateWithLang to="/ru/services/:id" />} />
         <Route path="cases" element={<Navigate to="/ru/cases" replace />} />
-        <Route path="cases/:id" element={<NavigateWithLang to="/ru/cases/:id" />} />
+        <Route path="cases/:slug" element={<NavigateWithLang to="/ru/cases/:slug" />} />
         <Route path="news" element={<Navigate to="/ru/news" replace />} />
-        <Route path="news/:id" element={<NavigateWithLang to="/ru/news/:id" />} />
+        <Route path="news/:slug" element={<NavigateWithLang to="/ru/news/:slug" />} />
         <Route path="about" element={<Navigate to="/ru/about" replace />} />
         <Route path="contact" element={<Navigate to="/ru/contact" replace />} />
         <Route path="privacy" element={<Navigate to="/ru/privacy" replace />} />

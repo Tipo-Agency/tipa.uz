@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Tag } from '../../services/siteDataService';
 import { useLanguage } from '../../context/LanguageContext';
-import { useLocalizedLink } from '../../lib/useLocalizedLink';
+import { useLocalizedLink, getNewsLink } from '../../lib/useLocalizedLink';
 
 export interface NewsCardItem {
   id: string;
@@ -14,8 +14,8 @@ export interface NewsCardItem {
 }
 
 export const NewsCard: React.FC<{ item: NewsCardItem }> = ({ item }) => {
-  const { t } = useLanguage();
-  const newsLink = useLocalizedLink(`/news/${item.id}`);
+  const { t, language } = useLanguage();
+  const newsLink = getNewsLink(item, language);
 
   return (
     <Link

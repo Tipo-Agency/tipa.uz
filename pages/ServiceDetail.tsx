@@ -9,7 +9,7 @@ import { FAQSection } from '../components/ui/FAQ';
 import { Seo } from '../components/ui/Seo';
 import { getSiteData, CaseItem, Tag } from '../services/siteDataService';
 import { trackServiceView, trackCTAClick } from '../lib/analytics';
-import { useLocalizedLink, getLocalizedLink } from '../lib/useLocalizedLink';
+import { useLocalizedLink, getLocalizedLink, getCaseLink } from '../lib/useLocalizedLink';
 
 // --- Shared Components ---
 
@@ -359,7 +359,7 @@ const WebSpecialView: React.FC<{ service: typeof SERVICES_DATA[0] }> = ({ servic
                        const descriptionText = item.description?.replace(/<[^>]+>/g, ' ').slice(0, 100).trim() + '…' || '';
                        
                        return (
-                           <Link to={getLocalizedLink(`/cases/${item.id}`, language)} key={item.id} className="group block bg-dark-surface rounded-[2rem] overflow-hidden border border-white/5 hover:border-white/20 transition-colors">
+                           <Link to={getCaseLink(item, language)} key={item.id} className="group block bg-dark-surface rounded-[2rem] overflow-hidden border border-white/5 hover:border-white/20 transition-colors">
                                <div className="relative aspect-[4/3] overflow-hidden">
                                    {item.imageUrl ? (
                                        <img 
@@ -728,7 +728,7 @@ const SmmSpecialView: React.FC<{ service: typeof SERVICES_DATA[1] }> = ({ servic
                          const descriptionText = caseItem.description?.replace(/<[^>]+>/g, ' ').slice(0, 100).trim() + '…' || '';
                          
                          return (
-                             <Link key={caseItem.id} to={getLocalizedLink(`/cases/${caseItem.id}`, language)} className="group">
+                             <Link key={caseItem.id} to={getCaseLink(caseItem, language)} className="group">
                                  <div className="relative aspect-[16/10] overflow-hidden rounded-2xl mb-4">
                                      {caseItem.imageUrl ? (
                                          <img 

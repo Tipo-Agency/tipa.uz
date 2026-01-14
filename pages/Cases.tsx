@@ -7,7 +7,7 @@ import { Seo } from '../components/ui/Seo';
 import { useModal } from '../context/ModalContext';
 import { getSiteData, CaseItem, Tag } from '../services/siteDataService';
 import { trackCTAClick } from '../lib/analytics';
-import { useLocalizedLink, getLocalizedLink } from '../lib/useLocalizedLink';
+import { useLocalizedLink, getLocalizedLink, getCaseLink } from '../lib/useLocalizedLink';
 
 const Cases: React.FC = () => {
   const { t, language } = useLanguage();
@@ -86,7 +86,7 @@ const Cases: React.FC = () => {
                 ?.map((id) => tagsMap.get(id))
                 .filter(Boolean) as Tag[];
 
-              const caseLink = getLocalizedLink(`/cases/${item.id}`, language);
+              const caseLink = getCaseLink(item, language);
               return (
                 <Link
                   to={caseLink}

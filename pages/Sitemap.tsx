@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getSiteData } from '../services/siteDataService';
+import { generateSlug } from '../lib/slugify';
 
 /**
  * Dynamic Sitemap generator for SEO
@@ -61,8 +62,10 @@ const Sitemap: React.FC = () => {
 
         // Add dynamic cases for each language
         cases.forEach((caseItem) => {
+          const caseTitle = caseItem.title || caseItem.description?.replace(/<[^>]+>/g, ' ').slice(0, 50) || 'case';
+          const caseSlug = generateSlug(caseTitle, caseItem.id);
           languages.forEach((lang) => {
-            const url = `${baseUrl}/${lang}/cases/${caseItem.id}`;
+            const url = `${baseUrl}/${lang}/cases/${caseSlug}`;
             const lastmod = caseItem.createdAt 
               ? new Date(caseItem.createdAt).toISOString().split('T')[0]
               : new Date().toISOString().split('T')[0];
@@ -74,12 +77,12 @@ const Sitemap: React.FC = () => {
     <priority>0.8</priority>`;
             
             languages.forEach((altLang) => {
-              const altUrl = `${baseUrl}/${altLang}/cases/${caseItem.id}`;
+              const altUrl = `${baseUrl}/${altLang}/cases/${caseSlug}`;
               sitemap += `
     <xhtml:link rel="alternate" hreflang="${altLang}" href="${altUrl}" />`;
             });
             sitemap += `
-    <xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}/ru/cases/${caseItem.id}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}/ru/cases/${caseSlug}" />
   </url>
 `;
           });
@@ -87,8 +90,9 @@ const Sitemap: React.FC = () => {
 
         // Add dynamic news for each language
         news.forEach((newsItem) => {
+          const newsSlug = generateSlug(newsItem.title, newsItem.id);
           languages.forEach((lang) => {
-            const url = `${baseUrl}/${lang}/news/${newsItem.id}`;
+            const url = `${baseUrl}/${lang}/news/${newsSlug}`;
             const lastmod = newsItem.publishedAt || newsItem.createdAt
               ? new Date(newsItem.publishedAt || newsItem.createdAt || '').toISOString().split('T')[0]
               : new Date().toISOString().split('T')[0];
@@ -100,12 +104,12 @@ const Sitemap: React.FC = () => {
     <priority>0.7</priority>`;
             
             languages.forEach((altLang) => {
-              const altUrl = `${baseUrl}/${altLang}/news/${newsItem.id}`;
+              const altUrl = `${baseUrl}/${altLang}/news/${newsSlug}`;
               sitemap += `
     <xhtml:link rel="alternate" hreflang="${altLang}" href="${altUrl}" />`;
             });
             sitemap += `
-    <xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}/ru/news/${newsItem.id}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}/ru/news/${newsSlug}" />
   </url>
 `;
           });

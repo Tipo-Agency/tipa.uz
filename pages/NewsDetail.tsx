@@ -7,6 +7,7 @@ import { Seo } from '../components/ui/Seo';
 import { useLanguage } from '../context/LanguageContext';
 import { trackNewsView } from '../lib/analytics';
 import { useLocalizedLink } from '../lib/useLocalizedLink';
+import { generateSlug } from '../lib/slugify';
 
 const formatDate = (iso?: string) => {
   if (!iso) return '';
@@ -20,7 +21,7 @@ const formatDate = (iso?: string) => {
 };
 
 const NewsDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const { t } = useLanguage();
   const [item, setItem] = useState<FirebaseNews | null>(null);
   const [tags, setTags] = useState<Tag[]>([]);
@@ -28,16 +29,26 @@ const NewsDetail: React.FC = () => {
 
   useEffect(() => {
     const load = async () => {
-      if (!id) return;
+      if (!slug) return;
       try {
         const { news, tags } = await getSiteData();
-        const foundNews = news.find((n) => n.id === id) || null;
+        // Extract ID from slug (format: title-slug-id)
+        const idFromSlug = slug.split('-').pop() || slug;
+        // Try to find by ID first (for backward compatibility)
+        let foundNews = news.find((n) => n.id === idFromSlug) || null;
+        // If not found by ID, try to find by matching slug
+        if (!foundNews) {
+          foundNews = news.find((n) => {
+            const newsSlug = generateSlug(n.title, n.id);
+            return newsSlug === slug;
+          }) || null;
+        }
         setItem(foundNews);
         setTags(tags);
         
         // Track news view
         if (foundNews) {
-          trackNewsView(id, foundNews.title);
+          trackNewsView(foundNews.id, foundNews.title);
         }
       } catch (e) {
         console.error('Failed to load news detail', e);
@@ -46,7 +57,7 @@ const NewsDetail: React.FC = () => {
       }
     };
     load();
-  }, [id]);
+  }, [slug]);
 
   if (loading) {
     return <div className="h-screen flex items-center justify-center text-white">Loading…</div>;
@@ -94,7 +105,7 @@ const NewsDetail: React.FC = () => {
           },
           mainEntityOfPage: {
             '@type': 'WebPage',
-            '@id': `https://tipa.uz/news/${id}`
+            '@id': `https://tipa.uz/news/${slug}`
           }
         }}
       />
