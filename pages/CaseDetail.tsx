@@ -63,12 +63,18 @@ const CaseDetail: React.FC = () => {
     : '';
 
   const caseTitle = caseItem.title || caseItem.description?.replace(/<[^>]+>/g, ' ').slice(0, 50) || 'Кейс';
+  
+  // Формируем description для SEO (гарантируем, что он не пустой)
+  const caseDescription = caseItem.description?.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() || '';
+  const seoDescription = caseDescription.length > 0 
+    ? caseDescription.slice(0, 160) + (caseDescription.length > 160 ? '...' : '')
+    : `Кейс проекта ${caseTitle} от Типа агентство. ${caseItem.clientName ? `Клиент: ${caseItem.clientName}. ` : ''}Digital-решения для бизнеса в Узбекистане.`;
 
   return (
     <>
       <Seo
         title={`Кейс: ${caseTitle} | ${caseItem.clientName || 'Типа агентство'}`}
-        description={caseItem.description?.replace(/<[^>]+>/g, ' ').slice(0, 200).trim() || `Кейс проекта ${caseTitle} от Типа агентство. ${caseItem.clientName ? `Клиент: ${caseItem.clientName}` : ''}`}
+        description={seoDescription}
         image={caseItem.imageUrl}
         structuredData={{
           '@type': 'CreativeWork',

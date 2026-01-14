@@ -68,14 +68,19 @@ const NewsDetail: React.FC = () => {
   tags.forEach((t) => tagsMap.set(t.id, t));
   const resolvedTags = item.tags?.map((tid) => tagsMap.get(tid)).filter(Boolean) as Tag[];
 
-  const excerpt = item.excerpt || item.content?.replace(/<[^>]+>/g, ' ').slice(0, 200).trim() || '';
+  const excerpt = item.excerpt || item.content?.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() || '';
   const publishedDate = item.publishedAt || item.createdAt || '';
+  
+  // Формируем description для SEO (гарантируем, что он не пустой и оптимальной длины)
+  const seoDescription = excerpt.length > 0 
+    ? excerpt.slice(0, 160) + (excerpt.length > 160 ? '...' : '')
+    : `${item.title}. Новости и статьи о digital-маркетинге, разработке и автоматизации от Типа агентство.`;
 
   return (
     <>
       <Seo 
         title={item.title}
-        description={excerpt}
+        description={seoDescription}
         type="article"
         publishedTime={publishedDate}
         modifiedTime={item.createdAt}

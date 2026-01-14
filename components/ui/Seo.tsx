@@ -17,6 +17,23 @@ const baseUrl = 'https://tipa.uz';
 const defaultImage = `${baseUrl}/og-image.jpg`;
 const defaultDescription = 'Типа агентство — системный digital-партнер в Узбекистане. Разработка сайтов, SMM, брендинг, автоматизация бизнеса, CRM, SEO и реклама.';
 
+// Helper function to optimize description length (150-160 chars for SEO)
+const optimizeDescription = (desc: string): string => {
+  if (!desc || desc.trim().length === 0) {
+    return defaultDescription;
+  }
+  // Remove extra whitespace and HTML entities
+  const clean = desc.replace(/\s+/g, ' ').trim();
+  // Optimal length is 150-160 characters for SEO
+  if (clean.length <= 160) {
+    return clean;
+  }
+  // Cut at last space before 160 chars to avoid cutting words
+  const cut = clean.slice(0, 157);
+  const lastSpace = cut.lastIndexOf(' ');
+  return lastSpace > 120 ? cut.slice(0, lastSpace) + '...' : cut + '...';
+};
+
 export const Seo: React.FC<SeoProps> = ({ 
   title, 
   description = defaultDescription,
@@ -31,6 +48,9 @@ export const Seo: React.FC<SeoProps> = ({
   const location = useLocation();
   const fullTitle = `${title} | Типа агентство`;
   const url = `${baseUrl}${location.pathname}`;
+  
+  // Optimize description - ensure it's always present and properly formatted
+  const optimizedDescription = optimizeDescription(description || defaultDescription);
 
   useEffect(() => {
     // Update Title
@@ -38,6 +58,7 @@ export const Seo: React.FC<SeoProps> = ({
 
     // Helper function to update or create meta tag
     const updateMetaTag = (property: string, content: string, isProperty = false) => {
+      if (!content || content.trim().length === 0) return; // Skip empty content
       const attr = isProperty ? 'property' : 'name';
       let meta = document.querySelector(`meta[${attr}="${property}"]`);
       if (!meta) {
@@ -48,8 +69,8 @@ export const Seo: React.FC<SeoProps> = ({
       meta.setAttribute('content', content);
     };
 
-    // Basic Meta Tags
-    updateMetaTag('description', description);
+    // Basic Meta Tags - description is REQUIRED for SEO
+    updateMetaTag('description', optimizedDescription);
     updateMetaTag('robots', noindex ? 'noindex, nofollow' : 'index, follow');
     
     // Canonical URL
@@ -88,7 +109,7 @@ export const Seo: React.FC<SeoProps> = ({
 
     // Open Graph Tags
     updateMetaTag('og:title', fullTitle, true);
-    updateMetaTag('og:description', description, true);
+    updateMetaTag('og:description', optimizedDescription, true);
     updateMetaTag('og:image', image, true);
     updateMetaTag('og:url', url, true);
     updateMetaTag('og:type', type, true);
@@ -108,7 +129,7 @@ export const Seo: React.FC<SeoProps> = ({
     // Twitter Card Tags
     updateMetaTag('twitter:card', 'summary_large_image');
     updateMetaTag('twitter:title', fullTitle);
-    updateMetaTag('twitter:description', description);
+    updateMetaTag('twitter:description', optimizedDescription);
     updateMetaTag('twitter:image', image);
     updateMetaTag('twitter:url', url);
 
@@ -124,7 +145,7 @@ export const Seo: React.FC<SeoProps> = ({
       '@context': 'https://schema.org',
       '@type': type === 'article' ? 'Article' : 'WebPage',
       name: fullTitle,
-      description: description,
+      description: optimizedDescription,
       url: url,
       image: image,
       publisher: {
@@ -149,7 +170,7 @@ export const Seo: React.FC<SeoProps> = ({
 
     jsonLd.textContent = JSON.stringify(defaultStructuredData);
 
-  }, [title, description, image, type, url, fullTitle, publishedTime, modifiedTime, author, structuredData, noindex, location]);
+  }, [title, optimizedDescription, image, type, url, fullTitle, publishedTime, modifiedTime, author, structuredData, noindex, location]);
 
   return null;
 };
