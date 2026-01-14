@@ -90,9 +90,14 @@ const Sitemap: React.FC = () => {
           const caseSlug = generateSlug(caseTitle);
           languages.forEach((lang) => {
             const url = `${baseUrl}/${lang}/cases/${caseSlug}`;
-            const lastmod = caseItem.createdAt 
-              ? new Date(caseItem.createdAt).toISOString().split('T')[0]
-              : new Date().toISOString().split('T')[0];
+            // Safe date parsing
+            let lastmod = new Date().toISOString().split('T')[0];
+            if (caseItem.createdAt) {
+              const date = new Date(caseItem.createdAt);
+              if (!isNaN(date.getTime())) {
+                lastmod = date.toISOString().split('T')[0];
+              }
+            }
             
             sitemap += `  <url>
     <loc>${url}</loc>
@@ -117,9 +122,15 @@ const Sitemap: React.FC = () => {
           const newsSlug = generateSlug(newsItem.title);
           languages.forEach((lang) => {
             const url = `${baseUrl}/${lang}/news/${newsSlug}`;
-            const lastmod = newsItem.publishedAt || newsItem.createdAt
-              ? new Date(newsItem.publishedAt || newsItem.createdAt || '').toISOString().split('T')[0]
-              : new Date().toISOString().split('T')[0];
+            // Safe date parsing
+            let lastmod = new Date().toISOString().split('T')[0];
+            const dateValue = newsItem.publishedAt || newsItem.createdAt;
+            if (dateValue) {
+              const date = new Date(dateValue);
+              if (!isNaN(date.getTime())) {
+                lastmod = date.toISOString().split('T')[0];
+              }
+            }
             
             sitemap += `  <url>
     <loc>${url}</loc>
