@@ -9,10 +9,10 @@ export const ServiceMarquee: React.FC = () => {
 
   return (
     // Wrapper with overflow-hidden to prevent horizontal scroll on mobile
-    <div className="w-full overflow-hidden relative" style={{ maxWidth: '100vw', position: 'relative', overflowX: 'hidden' }}>
+    <div className="w-full overflow-hidden relative py-8 md:py-12" style={{ maxWidth: '100vw', position: 'relative', overflowX: 'hidden', minHeight: '80px' }}>
       {/* Added -rotate-2 permanently (removed md:rotate-0) and scaled/widened to prevent gaps */}
       <div 
-        className="bg-primary py-4 overflow-hidden relative border-y border-white/10 z-20 transform -rotate-2 origin-center" 
+        className="bg-primary py-6 md:py-8 overflow-hidden relative border-y border-white/10 z-20 transform -rotate-2 origin-center" 
         style={{ 
           width: '110vw',
           marginLeft: '-5vw',
