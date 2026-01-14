@@ -22,7 +22,7 @@ const formatDate = (iso?: string) => {
 
 const NewsDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [item, setItem] = useState<FirebaseNews | null>(null);
   const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
@@ -59,7 +59,7 @@ const NewsDetail: React.FC = () => {
   }
 
   if (!item) {
-    return <Navigate to="/news" replace />;
+    return <Navigate to={`/${language}/news`} replace />;
   }
 
   const date = formatDate(item.publishedAt || item.createdAt);

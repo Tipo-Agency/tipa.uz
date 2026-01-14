@@ -11,10 +11,11 @@ import { generateSlug } from '../lib/slugify';
 
 const CaseDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [caseItem, setCaseItem] = useState<CaseItem | null>(null);
   const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
+  const casesLink = useLocalizedLink('/cases');
 
   useEffect(() => {
     const load = async () => {
@@ -49,7 +50,7 @@ const CaseDetail: React.FC = () => {
   }
 
   if (!caseItem) {
-    return <Navigate to="/cases" replace />;
+    return <Navigate to={`/${language}/cases`} replace />;
   }
 
   const tagsMap = new Map<string, Tag>();
@@ -61,15 +62,17 @@ const CaseDetail: React.FC = () => {
     ? caseItem.description.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 200) + (caseItem.description.replace(/<[^>]+>/g, ' ').length > 200 ? '...' : '')
     : '';
 
+  const caseTitle = caseItem.title || caseItem.description?.replace(/<[^>]+>/g, ' ').slice(0, 50) || 'Кейс';
+
   return (
     <>
       <Seo
-        title={`Кейс: ${caseItem.title} | ${caseItem.clientName || 'Типа агентство'}`}
-        description={caseItem.description?.replace(/<[^>]+>/g, ' ').slice(0, 200).trim() || `Кейс проекта ${caseItem.title} от Типа агентство. ${caseItem.clientName ? `Клиент: ${caseItem.clientName}` : ''}`}
+        title={`Кейс: ${caseTitle} | ${caseItem.clientName || 'Типа агентство'}`}
+        description={caseItem.description?.replace(/<[^>]+>/g, ' ').slice(0, 200).trim() || `Кейс проекта ${caseTitle} от Типа агентство. ${caseItem.clientName ? `Клиент: ${caseItem.clientName}` : ''}`}
         image={caseItem.imageUrl}
         structuredData={{
           '@type': 'CreativeWork',
-          name: caseItem.title,
+          name: caseTitle,
           description: caseItem.description?.replace(/<[^>]+>/g, ' ').slice(0, 300),
           image: caseItem.imageUrl,
           creator: {
@@ -87,7 +90,7 @@ const CaseDetail: React.FC = () => {
 
       <section className="relative pt-32 pb-16 bg-dark">
         <div className="container mx-auto px-4 relative z-10">
-          <Breadcrumbs customTitle={caseItem.title} />
+          <Breadcrumbs customTitle={caseTitle} />
 
           {/* Layout: Фото и заголовок рядом */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-12 items-start">
@@ -97,7 +100,7 @@ const CaseDetail: React.FC = () => {
                 <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-black">
                   <img
                     src={caseItem.imageUrl}
-                    alt={`Кейс ${caseItem.title} от Типа агентство`}
+                    alt={`Кейс ${caseTitle} от Типа агентство`}
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
@@ -110,7 +113,7 @@ const CaseDetail: React.FC = () => {
             {/* Правая колонка: Заголовок или Фото */}
             <div className="order-1 lg:order-2 flex flex-col justify-center">
               <h1 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl text-white mb-6 leading-tight">
-                {caseItem.title}
+                {caseTitle}
               </h1>
               
               {resolvedTags && resolvedTags.length > 0 && (
@@ -177,7 +180,7 @@ const CaseDetail: React.FC = () => {
 
       <section className="py-24 text-center">
         <Link
-          to={useLocalizedLink('/cases')}
+          to={casesLink}
           className="inline-flex flex-col items-center group"
         >
           <span className="text-gray-500 uppercase tracking-widest text-sm mb-4">
