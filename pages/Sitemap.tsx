@@ -12,11 +12,17 @@ const Sitemap: React.FC = () => {
   const baseUrl = 'https://tipa.uz';
   const languages = ['ru', 'uz', 'en'];
 
+  console.log('🔵 Sitemap component rendered');
+
+  console.log('Sitemap component rendered');
+
   useEffect(() => {
+    console.log('Sitemap useEffect triggered');
     const generateSitemap = async () => {
       try {
         console.log('Starting sitemap generation...');
         const { cases, news } = await getSiteData();
+        console.log('getSiteData completed:', { cases: cases.length, news: news.length });
         
         console.log('Raw data loaded:', {
           casesCount: cases.length,
