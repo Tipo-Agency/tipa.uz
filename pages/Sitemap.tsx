@@ -15,17 +15,27 @@ const Sitemap: React.FC = () => {
   useEffect(() => {
     const generateSitemap = async () => {
       try {
+        console.log('Starting sitemap generation...');
         const { cases, news } = await getSiteData();
         
-        // Filter only published items
-        const publishedCases = cases.filter(c => c.published !== false);
-        const publishedNews = news.filter(n => n.published !== false);
+        console.log('Raw data loaded:', {
+          casesCount: cases.length,
+          newsCount: news.length,
+          firstCase: cases[0] ? { id: cases[0].id, title: cases[0].title, published: cases[0].published } : null,
+          firstNews: news[0] ? { id: news[0].id, title: news[0].title, published: news[0].published } : null
+        });
+        
+        // getSiteData already filters by published === true, so we use all items
+        const publishedCases = cases;
+        const publishedNews = news;
         
         console.log('Sitemap generation:', {
           totalCases: cases.length,
           publishedCases: publishedCases.length,
+          publishedCasesIds: publishedCases.map(c => c.id),
           totalNews: news.length,
-          publishedNews: publishedNews.length
+          publishedNews: publishedNews.length,
+          publishedNewsIds: publishedNews.map(n => n.id)
         });
         
         const staticPages = [
