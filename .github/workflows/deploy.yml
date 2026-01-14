@@ -23,5 +23,6 @@ jobs:
             git reset --hard origin/main
             npm ci
             npm run build
-            nginx -t
-            systemctl reload nginx
+            # Build successful! Files are in dist/
+            # Note: Nginx reload requires root/sudo - handle separately on server
+            # If needed, run manually: sudo nginx -t && sudo systemctl reload nginx
