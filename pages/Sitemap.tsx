@@ -124,6 +124,13 @@ const Sitemap: React.FC = () => {
         });
 
         sitemap += `</urlset>`;
+        
+        console.log('Sitemap generated successfully:', {
+          totalUrls: staticPages.length * languages.length + publishedCases.length * languages.length + publishedNews.length * languages.length,
+          casesUrls: publishedCases.length * languages.length,
+          newsUrls: publishedNews.length * languages.length
+        });
+        
         setXml(sitemap);
       } catch (error) {
         console.error('Error generating sitemap:', error);
@@ -137,25 +144,40 @@ const Sitemap: React.FC = () => {
   // Set content type and return XML
   useEffect(() => {
     if (xml) {
-      // Set content type header
-      const meta = document.createElement('meta');
-      meta.httpEquiv = 'Content-Type';
-      meta.content = 'application/xml; charset=utf-8';
-      document.head.appendChild(meta);
+      // Try to set content type (works in some cases)
+      const meta = document.querySelector('meta[http-equiv="Content-Type"]');
+      if (meta) {
+        meta.setAttribute('content', 'application/xml; charset=utf-8');
+      } else {
+        const newMeta = document.createElement('meta');
+        newMeta.httpEquiv = 'Content-Type';
+        newMeta.content = 'application/xml; charset=utf-8';
+        document.head.appendChild(newMeta);
+      }
       
-      // Replace body content with XML
-      document.body.innerHTML = `<pre style="white-space: pre-wrap; font-family: monospace;">${xml}</pre>`;
+      // Clear body and show XML
+      document.body.innerHTML = '';
+      const pre = document.createElement('pre');
+      pre.style.whiteSpace = 'pre-wrap';
+      pre.style.fontFamily = 'monospace';
+      pre.style.padding = '20px';
+      pre.style.backgroundColor = '#1a1a1a';
+      pre.style.color = '#fff';
+      pre.textContent = xml;
+      document.body.appendChild(pre);
     }
   }, [xml]);
 
   // Return XML as text
   if (xml) {
-    return (
-      <div dangerouslySetInnerHTML={{ __html: `<pre style="white-space: pre-wrap; font-family: monospace;">${xml}</pre>` }} />
-    );
+    return null; // Content is set via useEffect
   }
 
-  return <div>Loading sitemap...</div>;
+  return (
+    <div style={{ padding: '20px', color: '#fff' }}>
+      Loading sitemap...
+    </div>
+  );
 };
 
 export default Sitemap;
