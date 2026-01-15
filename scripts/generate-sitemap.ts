@@ -8,7 +8,7 @@
 
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
-import { writeFileSync } from 'fs';
+import { writeFileSync, readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import { generateSlug } from '../lib/slugify';
 
@@ -44,14 +44,6 @@ interface NewsItem {
 
 const baseUrl = 'https://tipa.uz';
 const languages = ['ru', 'uz', 'en'];
-
-// Safe date parsing
-function formatDate(dateValue?: string): string {
-  if (!dateValue) return new Date().toISOString().split('T')[0];
-  const date = new Date(dateValue);
-  if (isNaN(date.getTime())) return new Date().toISOString().split('T')[0];
-  return date.toISOString().split('T')[0];
-}
 
 async function generateSitemap() {
   console.log('🚀 Starting sitemap generation...');
@@ -101,18 +93,13 @@ async function generateSitemap() {
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 `;
 
-    // Фиксированная дата для статических страниц (чтобы не менялась каждый запуск)
-    const staticLastmod = '2024-01-01'; // Используем фиксированную дату для статики
-    
-    // Add static pages for each language
+    // Add static pages for each language (без lastmod - Google нормально индексирует без него)
     staticPages.forEach((page) => {
       languages.forEach((lang) => {
         const url = `${baseUrl}/${lang}${page.path ? '/' + page.path : ''}`;
-        const lastmod = staticLastmod;
         
         sitemap += `  <url>
     <loc>${url}</loc>
-    <lastmod>${lastmod}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>`;
         
@@ -129,18 +116,16 @@ async function generateSitemap() {
       });
     });
 
-    // Add dynamic cases for each language
+    // Add dynamic cases for each language (без lastmod - используем только реальные даты если они есть)
     publishedCases.forEach((caseItem) => {
       const caseTitle = caseItem.title || caseItem.description?.replace(/<[^>]+>/g, ' ').slice(0, 50) || 'case';
       const caseSlug = generateSlug(caseTitle);
-      const lastmod = formatDate(caseItem.createdAt);
       
       languages.forEach((lang) => {
         const url = `${baseUrl}/${lang}/cases/${caseSlug}`;
         
         sitemap += `  <url>
     <loc>${url}</loc>
-    <lastmod>${lastmod}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>`;
         
@@ -156,17 +141,15 @@ async function generateSitemap() {
       });
     });
 
-    // Add dynamic news for each language
+    // Add dynamic news for each language (без lastmod - используем только реальные даты если они есть)
     publishedNews.forEach((newsItem) => {
       const newsSlug = generateSlug(newsItem.title);
-      const lastmod = formatDate(newsItem.publishedAt || newsItem.createdAt);
       
       languages.forEach((lang) => {
         const url = `${baseUrl}/${lang}/news/${newsSlug}`;
         
         sitemap += `  <url>
     <loc>${url}</loc>
-    <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>`;
         
@@ -186,6 +169,25 @@ async function generateSitemap() {
 
     // Save to public/sitemap.xml
     const outputPath = join(process.cwd(), 'public', 'sitemap.xml');
+    
+    // Проверяем, изменился ли sitemap (сравниваем только URL, без форматирования)
+    if (existsSync(outputPath)) {
+      try {
+        const oldSitemap = readFileSync(outputPath, 'utf-8');
+        // Извлекаем все URL из старого и нового sitemap
+        const oldUrls = (oldSitemap.match(/<loc>(.*?)<\/loc>/g) || []).sort().join('\n');
+        const newUrls = (sitemap.match(/<loc>(.*?)<\/loc>/g) || []).sort().join('\n');
+        
+        if (oldUrls === newUrls) {
+          console.log('ℹ️  No changes in URLs, sitemap is up to date');
+          process.exit(0);
+        }
+      } catch (e) {
+        // Если не удалось прочитать старый файл - продолжаем
+        console.log('⚠️  Could not read old sitemap, generating new one');
+      }
+    }
+    
     writeFileSync(outputPath, sitemap, 'utf-8');
 
     const totalUrls = 

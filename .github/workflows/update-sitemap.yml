@@ -27,6 +27,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Полная история для правильного rebase
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -55,17 +57,20 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
           
-          git add public/sitemap.xml
-          git commit -m "chore: auto-update sitemap [skip ci]"
-          
-          # Простая синхронизация: fetch + rebase + push
+          # 1. Fetch последних изменений
           git fetch origin main
+          
+          # 2. Rebase на актуальную версию main
           git rebase origin/main || {
+            echo "Rebase failed, resetting and regenerating..."
             git rebase --abort 2>/dev/null || true
             git reset --hard origin/main
             npm run generate-sitemap
             git add public/sitemap.xml
-            git commit -m "chore: auto-update sitemap [skip ci]" || true
+            if ! git diff --cached --quiet; then
+              git commit -m "chore: auto-update sitemap [skip ci]"
+            fi
           }
           
+          # 3. Push
           git push origin HEAD:main
