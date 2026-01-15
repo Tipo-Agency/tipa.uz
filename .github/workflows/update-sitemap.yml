@@ -51,50 +51,93 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -e
           echo "🔐 Setting up git config..."
           git config --local user.email "action@github.com"
           git config --local user.name "github-actions[bot]"
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
+          
+          echo "📝 Staging changes..."
           git add public/sitemap.xml
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
           fi
-          git commit -m "chore: auto-update sitemap [skip ci]"
+          
+          echo "💾 Committing changes..."
+          git commit -m "chore: auto-update sitemap [skip ci]" || exit 1
           echo "✅ Commit successful"
           
-          # Если за время работы раннера main обновился - подтягиваем и ребейзимся
-          echo "🔄 Syncing with remote..."
-          REBASE_SUCCESS=false
-          for i in 1 2 3; do
-            if git pull --rebase origin main; then
-              REBASE_SUCCESS=true
-              echo "✅ Rebase successful on attempt #$i"
-              break
-            else
-              echo "⚠️ Rebase failed, retry #$i"
+          # Синхронизация с удалённой веткой после коммита
+          echo "🔄 Syncing with remote (fetch + rebase)..."
+          git fetch origin main || {
+            echo "❌ Failed to fetch from origin"
+            exit 1
+          }
+          
+          # Проверяем, есть ли новые коммиты в удалённой ветке
+          LOCAL=$(git rev-parse HEAD)
+          REMOTE=$(git rev-parse origin/main)
+          BASE=$(git merge-base HEAD origin/main)
+          
+          if [ "$LOCAL" = "$REMOTE" ]; then
+            echo "✅ Already up to date with origin/main"
+          elif [ "$LOCAL" = "$BASE" ]; then
+            echo "⚠️ Local branch is behind, fast-forwarding..."
+            git merge --ff-only origin/main || {
+              echo "❌ Fast-forward failed, trying rebase..."
+              git rebase origin/main || {
+                echo "❌ Rebase failed, aborting and trying reset approach..."
+                git rebase --abort 2>/dev/null || true
+                # Fallback: reset и перегенерируем
+                git reset --hard origin/main
+                npm run generate-sitemap
+                git add public/sitemap.xml
+                if ! git diff --cached --quiet; then
+                  git commit -m "chore: auto-update sitemap [skip ci]"
+                fi
+              }
+            }
+          elif [ "$REMOTE" = "$BASE" ]; then
+            echo "✅ Local branch is ahead, ready to push"
+          else
+            echo "⚠️ Branches have diverged, rebasing..."
+            git rebase origin/main || {
+              echo "❌ Rebase failed, trying reset approach..."
               git rebase --abort 2>/dev/null || true
+              git reset --hard origin/main
+              npm run generate-sitemap
+              git add public/sitemap.xml
+              if ! git diff --cached --quiet; then
+                git commit -m "chore: auto-update sitemap [skip ci]"
+              fi
+            }
+          fi
+          
+          echo "🚀 Pushing to origin/main..."
+          # Пробуем push с несколькими попытками
+          for i in 1 2 3; do
+            if git push origin HEAD:main; then
+              echo "✅ Push successful on attempt #$i"
+              exit 0
+            else
+              echo "⚠️ Push failed on attempt #$i, retrying sync..."
+              git fetch origin main
+              git rebase origin/main || {
+                git rebase --abort 2>/dev/null || true
+                git reset --hard origin/main
+                npm run generate-sitemap
+                git add public/sitemap.xml
+                if ! git diff --cached --quiet; then
+                  git commit -m "chore: auto-update sitemap [skip ci]"
+                fi
+              }
               sleep 2
             fi
           done
           
-          if [ "$REBASE_SUCCESS" = false ]; then
-            echo "❌ Rebase failed after 3 attempts, trying reset and regenerate..."
-            git fetch origin main
-            git reset --hard origin/main
-            npm run generate-sitemap
-            git add public/sitemap.xml
-            if ! git diff --cached --quiet; then
-              git commit -m "chore: auto-update sitemap [skip ci]"
-            fi
-          fi
-          
-          echo "🚀 Pushing to origin/main..."
-          git push origin HEAD:main || {
-            echo "❌ Push failed, checking status..."
-            git status
-            git log --oneline -5
-            exit 1
-          }
-          echo "✅ Push successful!"
+          echo "❌ Push failed after 3 attempts"
+          echo "📊 Current status:"
+          git status
+          echo "📋 Recent commits:"
+          git log --oneline -5
+          exit 1
