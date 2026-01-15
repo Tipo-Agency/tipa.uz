@@ -48,23 +48,53 @@ jobs:
       - name: Commit and push if changed
         if: steps.git-check.outputs.changed == 'true'
         shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
+          echo "🔐 Setting up git config..."
           git config --local user.email "action@github.com"
           git config --local user.name "github-actions[bot]"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
           git add public/sitemap.xml
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
           fi
           git commit -m "chore: auto-update sitemap [skip ci]"
+          echo "✅ Commit successful"
+          
           # Если за время работы раннера main обновился - подтягиваем и ребейзимся
+          echo "🔄 Syncing with remote..."
+          REBASE_SUCCESS=false
           for i in 1 2 3; do
             if git pull --rebase origin main; then
+              REBASE_SUCCESS=true
+              echo "✅ Rebase successful on attempt #$i"
               break
             else
-              echo "Rebase failed, retry #$i"
+              echo "⚠️ Rebase failed, retry #$i"
+              git rebase --abort 2>/dev/null || true
               sleep 2
             fi
           done
-          git push origin HEAD:main
+          
+          if [ "$REBASE_SUCCESS" = false ]; then
+            echo "❌ Rebase failed after 3 attempts, trying reset and regenerate..."
+            git fetch origin main
+            git reset --hard origin/main
+            npm run generate-sitemap
+            git add public/sitemap.xml
+            if ! git diff --cached --quiet; then
+              git commit -m "chore: auto-update sitemap [skip ci]"
+            fi
+          fi
+          
+          echo "🚀 Pushing to origin/main..."
+          git push origin HEAD:main || {
+            echo "❌ Push failed, checking status..."
+            git status
+            git log --oneline -5
+            exit 1
+          }
+          echo "✅ Push successful!"
