@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "push": "git add . && git commit -m \"auto update\" || true && git push",
+    "push": "git add . && (git commit -m \"auto update\" || true) && git pull --rebase origin main && git push origin main",
     "generate-sitemap": "tsx scripts/generate-sitemap.ts"
   },
   "dependencies": {
