@@ -3,7 +3,6 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://tipa.uz/ru</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru" />
@@ -13,7 +12,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/uz</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru" />
@@ -23,7 +21,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/en</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru" />
@@ -33,7 +30,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/ru/services</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/services" />
@@ -43,7 +39,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/uz/services</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/services" />
@@ -53,7 +48,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/en/services</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/services" />
@@ -63,7 +57,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/ru/cases</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/cases" />
@@ -73,7 +66,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/uz/cases</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/cases" />
@@ -83,7 +75,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/en/cases</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/cases" />
@@ -93,7 +84,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/ru/news</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news" />
@@ -103,7 +93,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/uz/news</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news" />
@@ -113,7 +102,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/en/news</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news" />
@@ -123,7 +111,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/ru/about</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/about" />
@@ -133,7 +120,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/uz/about</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/about" />
@@ -143,7 +129,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/en/about</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/about" />
@@ -153,7 +138,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/ru/contact</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/contact" />
@@ -163,7 +147,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/uz/contact</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/contact" />
@@ -173,7 +156,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/en/contact</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/contact" />
@@ -183,7 +165,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/ru/privacy</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/privacy" />
@@ -193,7 +174,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/uz/privacy</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/privacy" />
@@ -203,7 +183,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/en/privacy</loc>
-    <lastmod>2024-01-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/privacy" />
@@ -213,7 +192,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/ru/cases/taskauz-sistema-upravleniya-biznesom</loc>
-    <lastmod>2026-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/cases/taskauz-sistema-upravleniya-biznesom" />
@@ -223,7 +201,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/uz/cases/taskauz-sistema-upravleniya-biznesom</loc>
-    <lastmod>2026-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/cases/taskauz-sistema-upravleniya-biznesom" />
@@ -233,7 +210,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/en/cases/taskauz-sistema-upravleniya-biznesom</loc>
-    <lastmod>2026-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/cases/taskauz-sistema-upravleniya-biznesom" />
@@ -243,7 +219,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/ru/cases/papakha-kofe-kotoryy-nevozmozhno-ne-polyubit</loc>
-    <lastmod>2026-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/cases/papakha-kofe-kotoryy-nevozmozhno-ne-polyubit" />
@@ -253,7 +228,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/uz/cases/papakha-kofe-kotoryy-nevozmozhno-ne-polyubit</loc>
-    <lastmod>2026-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/cases/papakha-kofe-kotoryy-nevozmozhno-ne-polyubit" />
@@ -263,7 +237,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/en/cases/papakha-kofe-kotoryy-nevozmozhno-ne-polyubit</loc>
-    <lastmod>2026-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/cases/papakha-kofe-kotoryy-nevozmozhno-ne-polyubit" />
@@ -273,7 +246,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/ru/cases/urban-210-fitnes-klub-novogo-urovnya</loc>
-    <lastmod>2026-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/cases/urban-210-fitnes-klub-novogo-urovnya" />
@@ -283,7 +255,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/uz/cases/urban-210-fitnes-klub-novogo-urovnya</loc>
-    <lastmod>2026-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/cases/urban-210-fitnes-klub-novogo-urovnya" />
@@ -293,7 +264,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/en/cases/urban-210-fitnes-klub-novogo-urovnya</loc>
-    <lastmod>2026-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/cases/urban-210-fitnes-klub-novogo-urovnya" />
@@ -303,7 +273,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/ru/news/my-otkrylis-i-da-my-znaem-chto-delaem</loc>
-    <lastmod>2026-01-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/my-otkrylis-i-da-my-znaem-chto-delaem" />
@@ -313,7 +282,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/uz/news/my-otkrylis-i-da-my-znaem-chto-delaem</loc>
-    <lastmod>2026-01-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/my-otkrylis-i-da-my-znaem-chto-delaem" />
@@ -323,7 +291,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/en/news/my-otkrylis-i-da-my-znaem-chto-delaem</loc>
-    <lastmod>2026-01-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/my-otkrylis-i-da-my-znaem-chto-delaem" />
@@ -333,7 +300,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/ru/news/my-otkryty-k-partnyorstvam-i-sovmestnym-proektam</loc>
-    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/my-otkryty-k-partnyorstvam-i-sovmestnym-proektam" />
@@ -343,7 +309,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/uz/news/my-otkryty-k-partnyorstvam-i-sovmestnym-proektam</loc>
-    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/my-otkryty-k-partnyorstvam-i-sovmestnym-proektam" />
@@ -353,7 +318,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/en/news/my-otkryty-k-partnyorstvam-i-sovmestnym-proektam</loc>
-    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/my-otkryty-k-partnyorstvam-i-sovmestnym-proektam" />
@@ -363,7 +327,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/ru/news/reshaem-zadachu-vashego-biznesa</loc>
-    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/reshaem-zadachu-vashego-biznesa" />
@@ -373,7 +336,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/uz/news/reshaem-zadachu-vashego-biznesa</loc>
-    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/reshaem-zadachu-vashego-biznesa" />
@@ -383,7 +345,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/en/news/reshaem-zadachu-vashego-biznesa</loc>
-    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/reshaem-zadachu-vashego-biznesa" />
@@ -393,7 +354,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/ru/news/ekspress-sayt-za-24-chasa-ot-2-mln</loc>
-    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/ekspress-sayt-za-24-chasa-ot-2-mln" />
@@ -403,7 +363,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/uz/news/ekspress-sayt-za-24-chasa-ot-2-mln</loc>
-    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/ekspress-sayt-za-24-chasa-ot-2-mln" />
@@ -413,7 +372,6 @@
   </url>
   <url>
     <loc>https://tipa.uz/en/news/ekspress-sayt-za-24-chasa-ot-2-mln</loc>
-    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/ekspress-sayt-za-24-chasa-ot-2-mln" />
@@ -422,63 +380,30 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tipa.uz/ru/news/ekspress-sayt-za-24-chasa-ot-2-mln" />
   </url>
   <url>
-    <loc>https://tipa.uz/ru/news/my-vnedryaem-ii-tuda-gde-on-realno-polezen</loc>
-    <lastmod>2026-01-14</lastmod>
+    <loc>https://tipa.uz/ru/news/chek-list-pochemu-u-biznesa-est-sayt-i-reklama-no-net-stabilnyh-zayavok</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/my-vnedryaem-ii-tuda-gde-on-realno-polezen" />
-    <xhtml:link rel="alternate" hreflang="uz" href="https://tipa.uz/uz/news/my-vnedryaem-ii-tuda-gde-on-realno-polezen" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://tipa.uz/en/news/my-vnedryaem-ii-tuda-gde-on-realno-polezen" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tipa.uz/ru/news/my-vnedryaem-ii-tuda-gde-on-realno-polezen" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/chek-list-pochemu-u-biznesa-est-sayt-i-reklama-no-net-stabilnyh-zayavok" />
+    <xhtml:link rel="alternate" hreflang="uz" href="https://tipa.uz/uz/news/chek-list-pochemu-u-biznesa-est-sayt-i-reklama-no-net-stabilnyh-zayavok" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tipa.uz/en/news/chek-list-pochemu-u-biznesa-est-sayt-i-reklama-no-net-stabilnyh-zayavok" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tipa.uz/ru/news/chek-list-pochemu-u-biznesa-est-sayt-i-reklama-no-net-stabilnyh-zayavok" />
   </url>
   <url>
-    <loc>https://tipa.uz/uz/news/my-vnedryaem-ii-tuda-gde-on-realno-polezen</loc>
-    <lastmod>2026-01-14</lastmod>
+    <loc>https://tipa.uz/uz/news/chek-list-pochemu-u-biznesa-est-sayt-i-reklama-no-net-stabilnyh-zayavok</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/my-vnedryaem-ii-tuda-gde-on-realno-polezen" />
-    <xhtml:link rel="alternate" hreflang="uz" href="https://tipa.uz/uz/news/my-vnedryaem-ii-tuda-gde-on-realno-polezen" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://tipa.uz/en/news/my-vnedryaem-ii-tuda-gde-on-realno-polezen" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tipa.uz/ru/news/my-vnedryaem-ii-tuda-gde-on-realno-polezen" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/chek-list-pochemu-u-biznesa-est-sayt-i-reklama-no-net-stabilnyh-zayavok" />
+    <xhtml:link rel="alternate" hreflang="uz" href="https://tipa.uz/uz/news/chek-list-pochemu-u-biznesa-est-sayt-i-reklama-no-net-stabilnyh-zayavok" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tipa.uz/en/news/chek-list-pochemu-u-biznesa-est-sayt-i-reklama-no-net-stabilnyh-zayavok" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tipa.uz/ru/news/chek-list-pochemu-u-biznesa-est-sayt-i-reklama-no-net-stabilnyh-zayavok" />
   </url>
   <url>
-    <loc>https://tipa.uz/en/news/my-vnedryaem-ii-tuda-gde-on-realno-polezen</loc>
-    <lastmod>2026-01-14</lastmod>
+    <loc>https://tipa.uz/en/news/chek-list-pochemu-u-biznesa-est-sayt-i-reklama-no-net-stabilnyh-zayavok</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/my-vnedryaem-ii-tuda-gde-on-realno-polezen" />
-    <xhtml:link rel="alternate" hreflang="uz" href="https://tipa.uz/uz/news/my-vnedryaem-ii-tuda-gde-on-realno-polezen" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://tipa.uz/en/news/my-vnedryaem-ii-tuda-gde-on-realno-polezen" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tipa.uz/ru/news/my-vnedryaem-ii-tuda-gde-on-realno-polezen" />
-  </url>
-  <url>
-    <loc>https://tipa.uz/ru/news/taskauz-nash-sistemnyy-partnyor</loc>
-    <lastmod>2026-01-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/taskauz-nash-sistemnyy-partnyor" />
-    <xhtml:link rel="alternate" hreflang="uz" href="https://tipa.uz/uz/news/taskauz-nash-sistemnyy-partnyor" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://tipa.uz/en/news/taskauz-nash-sistemnyy-partnyor" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tipa.uz/ru/news/taskauz-nash-sistemnyy-partnyor" />
-  </url>
-  <url>
-    <loc>https://tipa.uz/uz/news/taskauz-nash-sistemnyy-partnyor</loc>
-    <lastmod>2026-01-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/taskauz-nash-sistemnyy-partnyor" />
-    <xhtml:link rel="alternate" hreflang="uz" href="https://tipa.uz/uz/news/taskauz-nash-sistemnyy-partnyor" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://tipa.uz/en/news/taskauz-nash-sistemnyy-partnyor" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tipa.uz/ru/news/taskauz-nash-sistemnyy-partnyor" />
-  </url>
-  <url>
-    <loc>https://tipa.uz/en/news/taskauz-nash-sistemnyy-partnyor</loc>
-    <lastmod>2026-01-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/taskauz-nash-sistemnyy-partnyor" />
-    <xhtml:link rel="alternate" hreflang="uz" href="https://tipa.uz/uz/news/taskauz-nash-sistemnyy-partnyor" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://tipa.uz/en/news/taskauz-nash-sistemnyy-partnyor" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tipa.uz/ru/news/taskauz-nash-sistemnyy-partnyor" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://tipa.uz/ru/news/chek-list-pochemu-u-biznesa-est-sayt-i-reklama-no-net-stabilnyh-zayavok" />
+    <xhtml:link rel="alternate" hreflang="uz" href="https://tipa.uz/uz/news/chek-list-pochemu-u-biznesa-est-sayt-i-reklama-no-net-stabilnyh-zayavok" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tipa.uz/en/news/chek-list-pochemu-u-biznesa-est-sayt-i-reklama-no-net-stabilnyh-zayavok" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tipa.uz/ru/news/chek-list-pochemu-u-biznesa-est-sayt-i-reklama-no-net-stabilnyh-zayavok" />
   </url>
 </urlset>
