@@ -64,10 +64,12 @@ async function generateSitemap() {
       ...(doc.data() as Omit<CaseItem, 'id'>),
     }));
     
-    const publishedCases = allCases.filter((c) => {
-      const published = c.published === true || c.published === 'true' || c.published === 1;
-      return published;
-    });
+    const publishedCases = allCases
+      .filter((c) => {
+        const published = c.published === true || c.published === 'true' || c.published === 1;
+        return published;
+      })
+      .sort((a, b) => a.id.localeCompare(b.id)); // Детерминированная сортировка по ID
 
     console.log(`📦 Loaded ${publishedCases.length} published cases (out of ${allCases.length} total)`);
 
@@ -78,7 +80,9 @@ async function generateSitemap() {
       ...(doc.data() as Omit<NewsItem, 'id'>),
     }));
     
-    const publishedNews = allNews.filter((n) => n.published === true);
+    const publishedNews = allNews
+      .filter((n) => n.published === true)
+      .sort((a, b) => a.id.localeCompare(b.id)); // Детерминированная сортировка по ID
 
     console.log(`📰 Loaded ${publishedNews.length} published news (out of ${allNews.length} total)`);
 
@@ -97,11 +101,14 @@ async function generateSitemap() {
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 `;
 
+    // Фиксированная дата для статических страниц (чтобы не менялась каждый запуск)
+    const staticLastmod = '2024-01-01'; // Используем фиксированную дату для статики
+    
     // Add static pages for each language
     staticPages.forEach((page) => {
       languages.forEach((lang) => {
         const url = `${baseUrl}/${lang}${page.path ? '/' + page.path : ''}`;
-        const lastmod = new Date().toISOString().split('T')[0];
+        const lastmod = staticLastmod;
         
         sitemap += `  <url>
     <loc>${url}</loc>

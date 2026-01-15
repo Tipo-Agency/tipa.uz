@@ -14,6 +14,10 @@ on:
       - 'lib/firebase.ts'
       - 'services/siteDataService.ts'
 
+concurrency:
+  group: update-sitemap-main
+  cancel-in-progress: true
+
 jobs:
   update-sitemap:
     runs-on: ubuntu-latest
@@ -43,11 +47,24 @@ jobs:
       
       - name: Commit and push if changed
         if: steps.git-check.outputs.changed == 'true'
+        shell: bash
         run: |
+          set -e
           git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git pull origin main --rebase --autostash || git pull origin main
-          npm run generate-sitemap
+          git config --local user.name "github-actions[bot]"
           git add public/sitemap.xml
-          git commit -m "chore: auto-update sitemap [skip ci]" || exit 0
-          git push origin main
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: auto-update sitemap [skip ci]"
+          # Если за время работы раннера main обновился - подтягиваем и ребейзимся
+          for i in 1 2 3; do
+            if git pull --rebase origin main; then
+              break
+            else
+              echo "Rebase failed, retry #$i"
+              sleep 2
+            fi
+          done
+          git push origin HEAD:main
