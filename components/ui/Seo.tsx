@@ -18,8 +18,8 @@ const defaultImage = `${baseUrl}/og-image.jpg`;
 const defaultDescription = 'Типа агентство — системный digital-партнер в Узбекистане. Разработка сайтов, SMM, брендинг, автоматизация бизнеса, CRM, SEO и реклама.';
 
 // Helper function to optimize description length (150-160 chars for SEO)
-const optimizeDescription = (desc: string): string => {
-  if (!desc || desc.trim().length === 0) {
+const optimizeDescription = (desc: string | undefined): string => {
+  if (!desc || typeof desc !== 'string' || desc.trim().length === 0) {
     return defaultDescription;
   }
   // Remove extra whitespace and HTML entities
@@ -58,7 +58,7 @@ export const Seo: React.FC<SeoProps> = ({
 
     // Helper function to update or create meta tag
     const updateMetaTag = (property: string, content: string, isProperty = false) => {
-      if (!content || content.trim().length === 0) return; // Skip empty content
+      if (!content || typeof content !== 'string' || content.trim().length === 0) return; // Skip empty content
       const attr = isProperty ? 'property' : 'name';
       let meta = document.querySelector(`meta[${attr}="${property}"]`);
       if (!meta) {
