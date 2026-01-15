@@ -46,7 +46,8 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git pull origin main --rebase || true
+          git pull origin main --rebase --autostash || git pull origin main
+          npm run generate-sitemap
           git add public/sitemap.xml
           git commit -m "chore: auto-update sitemap [skip ci]" || exit 0
           git push origin main
