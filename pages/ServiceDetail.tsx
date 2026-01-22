@@ -432,7 +432,7 @@ const WebSpecialView: React.FC<{ service: typeof SERVICES_DATA[0] }> = ({ servic
 // --- 2. SMM SPECIAL VIEW ---
 const SmmSpecialView: React.FC<{ service: typeof SERVICES_DATA[1] }> = ({ service }) => {
   const { openModal } = useModal();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
     const [selectedImage, setSelectedImage] = useState<{src: string, title: string} | null>(null);
     const [smmCases, setSmmCases] = useState<CaseItem[]>([]);
     const [tagsMap, setTagsMap] = useState<Map<string, Tag>>(new Map());
