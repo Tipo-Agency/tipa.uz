@@ -391,7 +391,6 @@ export const LeadPopup: React.FC = () => {
               {isSubmitting ? t('contact.sending') : t('contact.form_btn')}
             </button>
           </form>
-        )}
         </div>
       </div>
     </>
