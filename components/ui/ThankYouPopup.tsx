@@ -2,16 +2,25 @@ import React, { useEffect } from 'react';
 import { useModal } from '../../context/ModalContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { useLocalizedLink } from '../../lib/useLocalizedLink';
+import { trackYandexMetrikaPageView } from '../../lib/analytics';
+import { useLocation } from 'react-router-dom';
 
 export const ThankYouPopup: React.FC = () => {
   const { isThankYouOpen, closeThankYou } = useModal();
   const { t } = useLanguage();
   const homeLink = useLocalizedLink('/');
+  const location = useLocation();
 
   // Блокируем скролл body когда модальное окно открыто
+  // И отправляем виртуальный переход в Яндекс.Метрике для цели "url: содержит"
   useEffect(() => {
     if (isThankYouOpen) {
       document.body.style.overflow = 'hidden';
+      
+      // Отправляем виртуальный переход с URL, содержащим "thank-you"
+      // Это позволит цели в Метрике с условием "url: содержит thank-you" сработать
+      const virtualUrl = `${location.pathname}?thank-you=1`;
+      trackYandexMetrikaPageView(virtualUrl, t('submitted.page_title') || 'Thank You');
     } else {
       document.body.style.overflow = '';
     }
@@ -19,7 +28,7 @@ export const ThankYouPopup: React.FC = () => {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isThankYouOpen]);
+  }, [isThankYouOpen, location.pathname, t]);
 
   if (!isThankYouOpen) {
     return null;

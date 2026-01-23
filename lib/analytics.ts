@@ -76,6 +76,38 @@ function trackYandexMetrika(eventName: string, params?: Record<string, any>) {
 }
 
 /**
+ * Отправляет виртуальный переход в Yandex.Metrika
+ * Используется для SPA, чтобы Метрика видела переход на виртуальную страницу
+ * Это позволяет использовать цели типа "Посещение страниц" с условием "url: содержит"
+ */
+export function trackYandexMetrikaPageView(url: string, title?: string) {
+  if (!isYandexMetrikaAvailable()) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('⚠️ Yandex.Metrika not available');
+    }
+    return;
+  }
+  
+  try {
+    const metrikaId = 106244564;
+    const options: any = {};
+    
+    if (title) {
+      options.title = title;
+    }
+    
+    // Виртуальный переход: ym(COUNTER_ID, 'hit', url, options)
+    (window as any).ym(metrikaId, 'hit', url, options);
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.log('✅ Yandex.Metrika virtual page view:', url, title ? `(title: ${title})` : '');
+    }
+  } catch (error) {
+    console.error('❌ Yandex.Metrika page view tracking error:', error);
+  }
+}
+
+/**
  * Отправляет событие в Google Tag Manager
  */
 function trackGTM(eventName: string, params?: Record<string, any>) {
