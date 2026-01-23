@@ -17,7 +17,7 @@ const getCountries = (t: (key: string) => string) => [
 ];
 
 export const LeadPopup: React.FC = () => {
-  const { isOpen, closeModal, sourceSection } = useModal();
+  const { isOpen, closeModal, sourceSection, openThankYou } = useModal();
   const { t } = useLanguage();
   const countries = getCountries(t);
   const [formState, setFormState] = useState({ 
@@ -28,7 +28,6 @@ export const LeadPopup: React.FC = () => {
     task: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
   const [showCountrySelect, setShowCountrySelect] = useState(false);
   const [error, setError] = useState<string>('');
 
@@ -176,7 +175,6 @@ export const LeadPopup: React.FC = () => {
       }
 
       setIsSubmitting(false);
-      setIsSuccess(true);
       setFormState({ 
         fullName: '', 
         phone: '', 
@@ -185,10 +183,11 @@ export const LeadPopup: React.FC = () => {
         task: ''
       });
       
+      // Закрываем модалку формы и открываем попап "Спасибо"
+      closeModal();
       setTimeout(() => {
-        closeModal();
-        setIsSuccess(false);
-      }, 3000);
+        openThankYou();
+      }, 300);
     } catch (err: any) {
       console.error('❌ Error submitting lead:', err);
       
@@ -250,16 +249,7 @@ export const LeadPopup: React.FC = () => {
           </svg>
         </button>
 
-        {isSuccess ? (
-           <div className="text-center py-10">
-              <div className="w-20 h-20 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-              </div>
-              <h3 className="font-display font-bold text-2xl mb-2 text-white">{t('contact.success_title')}</h3>
-              <p className="text-gray-400">{t('contact.success_text')}</p>
-           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
             <div className="text-center mb-8">
               <h2 className="font-display font-bold text-2xl md:text-3xl text-white mb-2">{t('home.cta_title')}</h2>
               <p className="text-gray-400 text-sm">{t('contact.intro')}</p>

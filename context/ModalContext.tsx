@@ -5,6 +5,10 @@ interface ModalContextType {
   sourceSection?: string; // Секция откуда открыта форма
   openModal: (sourceSection?: string) => void;
   closeModal: () => void;
+  // Попап "Спасибо"
+  isThankYouOpen: boolean;
+  openThankYou: () => void;
+  closeThankYou: () => void;
 }
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
@@ -12,6 +16,7 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined);
 export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [sourceSection, setSourceSection] = useState<string | undefined>(undefined);
+  const [isThankYouOpen, setIsThankYouOpen] = useState(false);
 
   const openModal = (section?: string) => {
     if (process.env.NODE_ENV === 'development') {
@@ -26,8 +31,24 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     setSourceSection(undefined);
   };
 
+  const openThankYou = () => {
+    setIsThankYouOpen(true);
+  };
+
+  const closeThankYou = () => {
+    setIsThankYouOpen(false);
+  };
+
   return (
-    <ModalContext.Provider value={{ isOpen, sourceSection, openModal, closeModal }}>
+    <ModalContext.Provider value={{ 
+      isOpen, 
+      sourceSection, 
+      openModal, 
+      closeModal,
+      isThankYouOpen,
+      openThankYou,
+      closeThankYou
+    }}>
       {children}
     </ModalContext.Provider>
   );

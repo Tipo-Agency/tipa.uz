@@ -175,12 +175,21 @@ export function trackCTAClick(ctaName: string, location?: string, additionalPara
  * Отслеживание отправки формы
  */
 export function trackFormSubmit(formName: string, sourceSection?: string, additionalParams?: Record<string, any>) {
-  trackEvent('form_submit', {
+  const baseParams = {
     event_category: 'conversion',
     event_label: formName,
     source_section: sourceSection || 'unknown',
     value: 1, // Конверсия
     ...additionalParams
+  };
+
+  // Универсальное событие отправки формы во все системы аналитики
+  trackEvent('form_submit', baseParams);
+
+  // Отдельная JS-цель в Яндекс.Метрике по имени формы
+  // В Метрике нужно создать цель типа "JavaScript-событие" с именем formName (например, "lead_form")
+  trackYandexMetrika(formName, {
+    ...baseParams,
   });
   
   // Также отправляем как конверсию лида

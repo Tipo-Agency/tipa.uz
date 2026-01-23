@@ -6,6 +6,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { CONTACT_INFO, Icons } from '../../constants';
 import { CookieConsent } from '../ui/CookieConsent';
 import { LeadPopup } from '../ui/LeadPopup';
+import { ThankYouPopup } from '../ui/ThankYouPopup';
 import { useModal } from '../../context/ModalContext';
 import { trackSocialClick, trackCTAClick } from '../../lib/analytics';
 import { useLocalizedLink } from '../../lib/useLocalizedLink';
@@ -256,6 +257,7 @@ const Layout: React.FC = () => {
       <Footer />
       <CookieConsent />
       <LeadPopup />
+      <ThankYouPopup />
     </div>
   );
 };

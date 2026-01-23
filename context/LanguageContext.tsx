@@ -186,6 +186,13 @@ const translations: Record<string, LocalizedString> = {
   'contact.error_permission': { ru: 'Ошибка доступа. Проверьте настройки безопасности.', uz: 'Kirish xatosi. Xavfsizlik sozlamalarini tekshiring.', en: 'Access error. Please check security settings.' },
   'contact.error_network': { ru: 'Проблема с сетью. Проверьте подключение к интернету.', uz: 'Tarmoq muammosi. Internet ulanishini tekshiring.', en: 'Network problem. Please check your internet connection.' },
   
+  // Submitted Page
+  'submitted.page_title': { ru: 'Спасибо за заявку', uz: 'Arizangiz uchun rahmat', en: 'Thank you for your request' },
+  'submitted.description': { ru: 'Ваша заявка принята. Мы свяжемся с вами в ближайшее время.', uz: 'Arizangiz qabul qilindi. Tez orada siz bilan bog\'lanamiz.', en: 'Your request has been received. We will contact you soon.' },
+  'submitted.title': { ru: 'Спасибо!', uz: 'Rahmat!', en: 'Thank you!' },
+  'submitted.text': { ru: 'Ваша заявка принята. Мы свяжемся с вами в ближайшее время.', uz: 'Arizangiz qabul qilindi. Tez orada siz bilan bog\'lanamiz.', en: 'Your request has been received. We will contact you soon.' },
+  'submitted.back_home': { ru: 'Вернуться на главную', uz: 'Bosh sahifaga qaytish', en: 'Back to Home' },
+  
   // Common UI elements
   'common.order': { ru: 'Заказать', uz: 'Buyurtma berish', en: 'Order' },
   'common.from': { ru: 'от', uz: 'dan', en: 'from' },
