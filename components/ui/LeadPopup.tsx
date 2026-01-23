@@ -167,6 +167,17 @@ export const LeadPopup: React.FC = () => {
           has_task: !!formState.task.trim(),
           lead_id: leadId
         });
+        
+        // Прямой вызов цели в Яндекс.Метрике для гарантии срабатывания
+        // Это именно то, что нужно для JS-события в Метрике
+        if (typeof window !== 'undefined' && typeof (window as any).ym === 'function') {
+          try {
+            (window as any).ym(106244564, 'reachGoal', 'lead_form');
+            console.log('✅ Yandex.Metrika goal "lead_form" sent directly');
+          } catch (metrikaError) {
+            console.error('❌ Direct Metrika call failed:', metrikaError);
+          }
+        }
       } catch (analyticsError) {
         // Логируем ошибку аналитики, но не блокируем успех формы
         if (process.env.NODE_ENV === 'development') {

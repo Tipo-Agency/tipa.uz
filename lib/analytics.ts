@@ -51,15 +51,27 @@ function isMetaPixelAvailable(): boolean {
 
 /**
  * Отправляет событие в Yandex.Metrika
+ * Для JS-событий (целей) вызывается без параметров: ym(COUNTER_ID, 'reachGoal', 'goal_name')
  */
 function trackYandexMetrika(eventName: string, params?: Record<string, any>) {
-  if (!isYandexMetrikaAvailable()) return;
+  if (!isYandexMetrikaAvailable()) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('⚠️ Yandex.Metrika not available');
+    }
+    return;
+  }
   
   try {
     const metrikaId = 106244564;
-    (window as any).ym(metrikaId, 'reachGoal', eventName, params);
+    // Для JS-событий (целей) вызываем без параметров, как в документации
+    // ym(COUNTER_ID, 'reachGoal', 'goal_name')
+    (window as any).ym(metrikaId, 'reachGoal', eventName);
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.log('✅ Yandex.Metrika goal sent:', eventName);
+    }
   } catch (error) {
-    console.error('Yandex.Metrika tracking error:', error);
+    console.error('❌ Yandex.Metrika tracking error:', error);
   }
 }
 
