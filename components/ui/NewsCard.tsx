@@ -1,8 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Tag } from '../../services/siteDataService';
 import { useLanguage } from '../../context/LanguageContext';
 import { useLocalizedLink, getNewsLink } from '../../lib/useLocalizedLink';
+
+// Функция для создания slug из имени тега (для URL)
+const createTagSlug = (name: string): string => {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9а-яё]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+};
 
 export interface NewsCardItem {
   id: string;
@@ -15,7 +24,17 @@ export interface NewsCardItem {
 
 export const NewsCard: React.FC<{ item: NewsCardItem }> = ({ item }) => {
   const { t, language } = useLanguage();
+  const [searchParams, setSearchParams] = useSearchParams();
   const newsLink = getNewsLink(item, language);
+
+  const handleTagClick = (e: React.MouseEvent, tagName: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const tagSlug = createTagSlug(tagName);
+    setSearchParams({ tag: tagSlug });
+    // Прокручиваем к началу списка новостей
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <Link
@@ -37,13 +56,14 @@ export const NewsCard: React.FC<{ item: NewsCardItem }> = ({ item }) => {
         {item.tags && item.tags.length > 0 && (
           <div className="absolute top-4 left-4 flex flex-wrap gap-2">
             {item.tags.slice(0, 2).map((tag) => (
-              <span
+              <button
                 key={tag.id}
-                className="bg-dark/80 backdrop-blur px-3 py-1 rounded text-[10px] font-bold text-white uppercase tracking-wider border border-white/10"
+                onClick={(e) => handleTagClick(e, tag.name)}
+                className="bg-dark/80 backdrop-blur px-3 py-1 rounded text-[10px] font-bold text-white uppercase tracking-wider border border-white/10 hover:bg-dark hover:border-primary/50 transition-all cursor-pointer"
                 style={tag.color ? { borderColor: tag.color, color: tag.color } : undefined}
               >
                 {tag.name}
-              </span>
+              </button>
             ))}
           </div>
         )}

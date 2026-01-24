@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Section } from '../components/ui/Section';
 import { useLanguage } from '../context/LanguageContext';
 import { Breadcrumbs } from '../components/ui/Breadcrumbs';
@@ -7,6 +8,15 @@ import { useModal } from '../context/ModalContext';
 import { getSiteData, News as FirebaseNews, Tag } from '../services/siteDataService';
 import { Seo } from '../components/ui/Seo';
 import { trackCTAClick } from '../lib/analytics';
+
+// Функция для создания slug из имени тега (для URL)
+const createTagSlug = (name: string): string => {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9а-яё]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+};
 
 const formatDate = (iso?: string) => {
   if (!iso) return '';
@@ -29,8 +39,13 @@ const buildExcerpt = (item: FirebaseNews): string => {
 const News: React.FC = () => {
   const { t } = useLanguage();
   const { openModal } = useModal();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [items, setItems] = useState<NewsCardItem[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Получаем фильтр из URL
+  const tagFilter = searchParams.get('tag') || null;
 
   useEffect(() => {
     const load = async () => {
@@ -48,6 +63,7 @@ const News: React.FC = () => {
           tags: n.tags?.map((id) => tagsMap.get(id)).filter(Boolean) as Tag[],
         }));
         setItems(mapped);
+        setTags(tags);
       } catch (e) {
         console.error('Failed to load news from Firestore', e);
       } finally {
@@ -56,6 +72,41 @@ const News: React.FC = () => {
     };
     load();
   }, []);
+
+  // Создаем обратную карту: slug -> tag
+  const tagsBySlug = useMemo(() => {
+    const map = new Map<string, Tag>();
+    tags.forEach((tag) => {
+      const slug = createTagSlug(tag.name);
+      map.set(slug, tag);
+    });
+    return map;
+  }, [tags]);
+
+  // Фильтруем новости по выбранному тегу
+  const filteredItems = useMemo(() => {
+    if (!tagFilter) {
+      return items;
+    }
+
+    const selectedTag = tagsBySlug.get(tagFilter);
+    if (!selectedTag) {
+      return items; // Если тег не найден, показываем все
+    }
+
+    return items.filter((item) => {
+      return item.tags?.some((tag) => tag.id === selectedTag.id);
+    });
+  }, [items, tagFilter, tagsBySlug]);
+
+  // Функция для установки фильтра
+  const handleTagFilter = (tagSlug: string | null) => {
+    if (tagSlug) {
+      setSearchParams({ tag: tagSlug });
+    } else {
+      setSearchParams({});
+    }
+  };
 
   return (
     <>
@@ -97,14 +148,93 @@ const News: React.FC = () => {
       <Section className="py-20">
         {loading ? (
           <div className="text-center py-20 text-gray-500">{t('news.loading')}</div>
-        ) : items.length === 0 ? (
-          <div className="text-center py-20 text-gray-500">{t('news.no_news')}</div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {items.map((item) => (
-              <NewsCard key={item.id} item={item} />
-            ))}
-          </div>
+          <>
+            {/* Фильтр по тегам */}
+            {tags.length > 0 && (
+              <div className="mb-12">
+                <div className="flex flex-wrap items-center gap-4 mb-6">
+                  <span className="text-sm font-bold text-gray-500 uppercase tracking-wider">
+                    {t('news.filter_by_tag') || 'Фильтр по тегам:'}
+                  </span>
+                  <button
+                    onClick={() => handleTagFilter(null)}
+                    className={`px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider transition-all ${
+                      !tagFilter
+                        ? 'bg-primary text-white'
+                        : 'bg-white/5 border border-white/10 text-gray-400 hover:border-primary/40 hover:text-white'
+                    }`}
+                  >
+                    {t('news.all_news') || 'Все новости'}
+                  </button>
+                  {tags.map((tag) => {
+                    const tagSlug = createTagSlug(tag.name);
+                    const isActive = tagFilter === tagSlug;
+                    return (
+                      <button
+                        key={tag.id}
+                        onClick={() => handleTagFilter(tagSlug)}
+                        className={`px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider transition-all ${
+                          isActive
+                            ? 'bg-primary text-white'
+                            : 'bg-white/5 border border-white/10 text-gray-400 hover:border-primary/40 hover:text-white'
+                        }`}
+                        style={
+                          isActive && tag.color
+                            ? { backgroundColor: tag.color, color: '#fff' }
+                            : tag.color && !isActive
+                            ? { borderColor: tag.color + '40', color: tag.color }
+                            : undefined
+                        }
+                      >
+                        {tag.name}
+                      </button>
+                    );
+                  })}
+                </div>
+                {tagFilter && (
+                  <div className="text-sm text-gray-400 mb-6">
+                    {filteredItems.length === 0 ? (
+                      <span>{t('news.no_news_for_tag') || 'Новости с этим тегом не найдены'}</span>
+                    ) : (
+                      <span>
+                        {t('news.showing') || 'Показано'} {filteredItems.length}{' '}
+                        {filteredItems.length === 1
+                          ? t('news.news_item') || 'новость'
+                          : filteredItems.length < 5
+                          ? t('news.news_items_2_4') || 'новости'
+                          : t('news.news_items') || 'новостей'}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {filteredItems.length === 0 && !loading ? (
+              <div className="text-center py-20">
+                <p className="text-gray-500 mb-4">
+                  {tagFilter
+                    ? t('news.no_news_for_tag') || 'Новости с этим тегом не найдены'
+                    : t('news.no_news') || 'Новости не найдены'}
+                </p>
+                {tagFilter && (
+                  <button
+                    onClick={() => handleTagFilter(null)}
+                    className="text-primary hover:text-white transition-colors underline"
+                  >
+                    {t('news.show_all') || 'Показать все новости'}
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredItems.map((item) => (
+                  <NewsCard key={item.id} item={item} />
+                ))}
+              </div>
+            )}
+          </>
         )}
       </Section>
 

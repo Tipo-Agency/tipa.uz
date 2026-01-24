@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
+import { trackOpenForm } from '../lib/analytics';
 
 interface ModalContextType {
   isOpen: boolean;
@@ -24,6 +25,10 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
     setSourceSection(section);
     setIsOpen(true);
+    
+    // Отслеживаем открытие формы в Яндекс.Метрике
+    const place = section || 'unknown';
+    trackOpenForm(place);
   };
   
   const closeModal = () => {

@@ -76,6 +76,52 @@ function trackYandexMetrika(eventName: string, params?: Record<string, any>) {
 }
 
 /**
+ * Универсальная функция для отслеживания открытия формы
+ * Отправляет микроцель click_form_open в Яндекс.Метрику
+ * @param place - место, откуда открыта форма (например, 'header_nav', 'home-hero', 'contact_page')
+ */
+export function trackOpenForm(place: string): void {
+  if (typeof window === 'undefined') return;
+  
+  if (isYandexMetrikaAvailable()) {
+    try {
+      const metrikaId = 106244564;
+      // Отправляем цель с параметром place для анализа источников
+      (window as any).ym(metrikaId, 'reachGoal', 'click_form_open', { place });
+      
+      if (process.env.NODE_ENV === 'development') {
+        console.log('✅ Yandex.Metrika: Form opened from', place);
+      }
+    } catch (error) {
+      console.error('❌ Yandex.Metrika trackOpenForm error:', error);
+    }
+  }
+}
+
+/**
+ * Универсальная функция для отслеживания успешной отправки заявки
+ * Отправляет макроцель lead_submit в Яндекс.Метрику
+ * Вызывается ТОЛЬКО при успешной отправке формы
+ */
+export function trackLeadSubmit(): void {
+  if (typeof window === 'undefined') return;
+  
+  if (isYandexMetrikaAvailable()) {
+    try {
+      const metrikaId = 106244564;
+      // Отправляем макроцель успешной отправки заявки
+      (window as any).ym(metrikaId, 'reachGoal', 'lead_submit');
+      
+      if (process.env.NODE_ENV === 'development') {
+        console.log('✅ Yandex.Metrika: Lead submitted successfully');
+      }
+    } catch (error) {
+      console.error('❌ Yandex.Metrika trackLeadSubmit error:', error);
+    }
+  }
+}
+
+/**
  * Отправляет виртуальный переход в Yandex.Metrika
  * Используется для SPA, чтобы Метрика видела переход на виртуальную страницу
  * Это позволяет использовать цели типа "Посещение страниц" с условием "url: содержит"

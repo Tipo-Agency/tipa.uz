@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState, useMemo } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Section } from '../components/ui/Section';
 import { useLanguage } from '../context/LanguageContext';
 import { Breadcrumbs } from '../components/ui/Breadcrumbs';
@@ -9,12 +9,25 @@ import { getSiteData, CaseItem, Tag } from '../services/siteDataService';
 import { trackCTAClick } from '../lib/analytics';
 import { useLocalizedLink, getLocalizedLink, getCaseLink } from '../lib/useLocalizedLink';
 
+// Функция для создания slug из имени тега (для URL)
+const createTagSlug = (name: string): string => {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9а-яё]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+};
+
 const Cases: React.FC = () => {
   const { t, language } = useLanguage();
   const { openModal } = useModal();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [cases, setCases] = useState<CaseItem[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Получаем фильтр из URL
+  const tagFilter = searchParams.get('tag') || null;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,6 +46,41 @@ const Cases: React.FC = () => {
 
   const tagsMap = new Map<string, Tag>();
   tags.forEach((tag) => tagsMap.set(tag.id, tag));
+
+  // Создаем обратную карту: slug -> tag
+  const tagsBySlug = useMemo(() => {
+    const map = new Map<string, Tag>();
+    tags.forEach((tag) => {
+      const slug = createTagSlug(tag.name);
+      map.set(slug, tag);
+    });
+    return map;
+  }, [tags]);
+
+  // Фильтруем кейсы по выбранному тегу
+  const filteredCases = useMemo(() => {
+    if (!tagFilter) {
+      return cases;
+    }
+
+    const selectedTag = tagsBySlug.get(tagFilter);
+    if (!selectedTag) {
+      return cases; // Если тег не найден, показываем все
+    }
+
+    return cases.filter((item) => {
+      return item.tags?.includes(selectedTag.id);
+    });
+  }, [cases, tagFilter, tagsBySlug]);
+
+  // Функция для установки фильтра
+  const handleTagFilter = (tagSlug: string | null) => {
+    if (tagSlug) {
+      setSearchParams({ tag: tagSlug });
+    } else {
+      setSearchParams({});
+    }
+  };
 
   return (
     <>
@@ -75,13 +123,88 @@ const Cases: React.FC = () => {
       <Section className="pb-24">
         {loading ? (
           <div className="text-center py-20 text-gray-500">{t('cases.loading')}</div>
-        ) : cases.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-gray-500 mb-4">{t('cases.no_cases')}</p>
-          </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {cases.map((item) => {
+          <>
+            {/* Фильтр по тегам */}
+            {tags.length > 0 && (
+              <div className="mb-12">
+                <div className="flex flex-wrap items-center gap-4 mb-6">
+                  <span className="text-sm font-bold text-gray-500 uppercase tracking-wider">
+                    {t('cases.filter_by_tag') || 'Фильтр по тегам:'}
+                  </span>
+                  <button
+                    onClick={() => handleTagFilter(null)}
+                    className={`px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider transition-all ${
+                      !tagFilter
+                        ? 'bg-primary text-white'
+                        : 'bg-white/5 border border-white/10 text-gray-400 hover:border-primary/40 hover:text-white'
+                    }`}
+                  >
+                    {t('cases.all_cases') || 'Все кейсы'}
+                  </button>
+                  {tags.map((tag) => {
+                    const tagSlug = createTagSlug(tag.name);
+                    const isActive = tagFilter === tagSlug;
+                    return (
+                      <button
+                        key={tag.id}
+                        onClick={() => handleTagFilter(tagSlug)}
+                        className={`px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider transition-all ${
+                          isActive
+                            ? 'bg-primary text-white'
+                            : 'bg-white/5 border border-white/10 text-gray-400 hover:border-primary/40 hover:text-white'
+                        }`}
+                        style={
+                          isActive && tag.color
+                            ? { backgroundColor: tag.color, color: '#fff' }
+                            : tag.color && !isActive
+                            ? { borderColor: tag.color + '40', color: tag.color }
+                            : undefined
+                        }
+                      >
+                        {tag.name}
+                      </button>
+                    );
+                  })}
+                </div>
+                {tagFilter && (
+                  <div className="text-sm text-gray-400 mb-6">
+                    {filteredCases.length === 0 ? (
+                      <span>{t('cases.no_cases_for_tag') || 'Кейсы с этим тегом не найдены'}</span>
+                    ) : (
+                      <span>
+                        {t('cases.showing') || 'Показано'} {filteredCases.length}{' '}
+                        {filteredCases.length === 1
+                          ? t('cases.case') || 'кейс'
+                          : filteredCases.length < 5
+                          ? t('cases.cases_2_4') || 'кейса'
+                          : t('cases.cases') || 'кейсов'}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {filteredCases.length === 0 && !loading ? (
+              <div className="text-center py-20">
+                <p className="text-gray-500 mb-4">
+                  {tagFilter
+                    ? t('cases.no_cases_for_tag') || 'Кейсы с этим тегом не найдены'
+                    : t('cases.no_cases') || 'Кейсы не найдены'}
+                </p>
+                {tagFilter && (
+                  <button
+                    onClick={() => handleTagFilter(null)}
+                    className="text-primary hover:text-white transition-colors underline"
+                  >
+                    {t('cases.show_all') || 'Показать все кейсы'}
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                {filteredCases.map((item) => {
               const resolvedTags = item.tags
                 ?.map((id) => tagsMap.get(id))
                 .filter(Boolean) as Tag[];
@@ -108,15 +231,25 @@ const Cases: React.FC = () => {
                   <div className="p-6 flex flex-col flex-1">
                     {resolvedTags && resolvedTags.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-3">
-                        {resolvedTags.slice(0, 3).map((tag) => (
-                          <span
-                            key={tag.id}
-                            className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-white/5 border border-white/10 text-gray-200"
-                            style={tag.color ? { borderColor: tag.color, color: tag.color } : undefined}
-                          >
-                            {tag.name}
-                          </span>
-                        ))}
+                        {resolvedTags.slice(0, 3).map((tag) => {
+                          const tagSlug = createTagSlug(tag.name);
+                          return (
+                            <button
+                              key={tag.id}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handleTagFilter(tagSlug);
+                                // Прокручиваем к началу списка кейсов
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                              }}
+                              className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-white/5 border border-white/10 text-gray-200 hover:bg-white/10 transition-all cursor-pointer"
+                              style={tag.color ? { borderColor: tag.color, color: tag.color } : undefined}
+                            >
+                              {tag.name}
+                            </button>
+                          );
+                        })}
                       </div>
                     )}
                     <h2 className="font-display font-bold text-2xl text-white mb-2 group-hover:text-primary transition-colors">
