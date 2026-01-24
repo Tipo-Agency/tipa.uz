@@ -21,7 +21,7 @@ jobs:
             cd ${{ secrets.SERVER_PATH }}
             git fetch origin
             git reset --hard origin/main
-            npm ci
+            npm install
             npm run build
             # Build successful! Files are in dist/
             # Note: Nginx reload requires root/sudo - handle separately on server
