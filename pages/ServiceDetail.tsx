@@ -81,8 +81,8 @@ const WebSpecialView: React.FC<{ service: typeof SERVICES_DATA[0] }> = ({ servic
         tags.forEach((tag) => tagsMapInstance.set(tag.id, tag));
         setTagsMap(tagsMapInstance);
         
-        // Фильтруем кейсы по тегу "Сайты и сервисы" (tag-1768292301321)
-        const websiteTagId = 'tag-1768292301321';
+        // Фильтруем кейсы по тегу "Сайты и сервисы" (tag-web)
+        const websiteTagId = 'tag-web';
         const filtered = cases
           .filter((c) => c.tags?.includes(websiteTagId))
           .slice(0, 3);
@@ -446,8 +446,8 @@ const SmmSpecialView: React.FC<{ service: typeof SERVICES_DATA[1] }> = ({ servic
                 tags.forEach((tag) => tagsMapInstance.set(tag.id, tag));
                 setTagsMap(tagsMapInstance);
                 
-                // Фильтруем кейсы по тегу "SMM и контент" (tag-1768292360988)
-                const smmTagId = 'tag-1768292360988';
+                // Фильтруем кейсы по тегу "SMM и контент" (tag-smm)
+                const smmTagId = 'tag-smm';
                 const filtered = cases
                     .filter((c) => c.tags?.includes(smmTagId))
                     .slice(0, 3);

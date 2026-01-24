@@ -107,6 +107,14 @@ const translations: Record<string, LocalizedString> = {
   'news.title': { ru: 'Новости', uz: 'Yangiliklar', en: 'News' },
   'news.intro': { ru: 'Делимся экспертизой, кейсами и новостями digital-мира.', uz: 'Ekspertiza, keyslar va digital-olam yangiliklari bilan bo\'lishamiz.', en: 'Sharing expertise, cases and digital world news.' },
   'news.read': { ru: 'Читать', uz: 'O\'qish', en: 'Read' },
+  'news.filter_by_tag': { ru: 'Фильтр по тегам:', uz: 'Teglar bo\'yicha filtr:', en: 'Filter by tags:' },
+  'news.all_news': { ru: 'Все новости', uz: 'Barcha yangiliklar', en: 'All news' },
+  'news.showing': { ru: 'Показано', uz: 'Ko\'rsatilmoqda', en: 'Showing' },
+  'news.news_item': { ru: 'новость', uz: 'yangilik', en: 'news item' },
+  'news.news_items_2_4': { ru: 'новости', uz: 'yangilik', en: 'news items' },
+  'news.news_items': { ru: 'новостей', uz: 'yangiliklar', en: 'news items' },
+  'news.no_news_for_tag': { ru: 'Новости с этим тегом не найдены', uz: 'Bu teg bilan yangiliklar topilmadi', en: 'No news found with this tag' },
+  'news.show_all': { ru: 'Показать все новости', uz: 'Barcha yangiliklarni ko\'rsatish', en: 'Show all news' },
 
   // FAQ
   'faq.title': { ru: 'FAQ', uz: 'FAQ', en: 'FAQ' },
@@ -155,6 +163,14 @@ const translations: Record<string, LocalizedString> = {
   },
   'cases.client': { ru: 'Клиент', uz: 'Mijoz', en: 'Client' },
   'cases.result_label': { ru: 'Результат', uz: 'Natija', en: 'Result' },
+  'cases.filter_by_tag': { ru: 'Фильтр по тегам:', uz: 'Teglar bo\'yicha filtr:', en: 'Filter by tags:' },
+  'cases.all_cases': { ru: 'Все кейсы', uz: 'Barcha keyslar', en: 'All cases' },
+  'cases.showing': { ru: 'Показано', uz: 'Ko\'rsatilmoqda', en: 'Showing' },
+  'cases.case': { ru: 'кейс', uz: 'keys', en: 'case' },
+  'cases.cases_2_4': { ru: 'кейса', uz: 'keys', en: 'cases' },
+  'cases.cases': { ru: 'кейсов', uz: 'keyslar', en: 'cases' },
+  'cases.no_cases_for_tag': { ru: 'Кейсы с этим тегом не найдены', uz: 'Bu teg bilan keyslar topilmadi', en: 'No cases found with this tag' },
+  'cases.show_all': { ru: 'Показать все кейсы', uz: 'Barcha keyslarni ko\'rsatish', en: 'Show all cases' },
 
   // Service Detail
   'service.back': { ru: 'Все услуги', uz: 'Barcha xizmatlar', en: 'All services' },

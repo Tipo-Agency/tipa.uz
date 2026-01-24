@@ -199,7 +199,42 @@ const CaseDetail: React.FC = () => {
       {/* Описание проекта */}
       {caseItem.description && (
         <Section className="bg-dark-surface py-16">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
+            <style dangerouslySetInnerHTML={{__html: `
+              .case-content { }
+              .case-hero-section { margin-bottom: 4rem; }
+              .case-hero-section .lead { font-size: 1.25rem; line-height: 1.8; color: #d1d5db; margin-top: 1.5rem; }
+              .case-section { margin-bottom: 4rem; }
+              .case-section h3 { font-size: 2rem; font-weight: bold; color: white; margin-bottom: 2rem; font-family: var(--font-display); }
+              .case-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem; }
+              .info-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 2rem; transition: all 0.3s; }
+              .info-card:hover { background: rgba(255,255,255,0.05); border-color: rgba(78,205,196,0.3); transform: translateY(-4px); }
+              .info-icon { font-size: 3rem; margin-bottom: 1rem; }
+              .info-card h3 { font-size: 1.5rem; font-weight: bold; color: white; margin-bottom: 1rem; font-family: var(--font-display); }
+              .info-card p { color: #9ca3af; line-height: 1.7; }
+              .problem-solution { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+              .problem-box, .solution-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 2rem; }
+              .problem-box { border-left: 4px solid #ef4444; }
+              .solution-box { border-left: 4px solid #4ECDC4; }
+              .problem-box h4, .solution-box h4 { font-size: 1.25rem; font-weight: bold; color: white; margin-bottom: 1rem; font-family: var(--font-display); }
+              .problem-box ul, .solution-box ul { list-style: none; padding: 0; }
+              .problem-box li, .solution-box li { color: #d1d5db; line-height: 1.8; margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative; }
+              .problem-box li:before { content: "✗"; position: absolute; left: 0; color: #ef4444; font-weight: bold; }
+              .solution-box li:before { content: "✓"; position: absolute; left: 0; color: #4ECDC4; font-weight: bold; }
+              .process-steps { display: flex; flex-direction: column; gap: 2rem; }
+              .step { display: flex; gap: 2rem; align-items: flex-start; }
+              .step-number { font-size: 4rem; font-weight: 900; color: #4ECDC4; line-height: 1; font-family: var(--font-display); opacity: 0.3; min-width: 80px; }
+              .step-content h4 { font-size: 1.5rem; font-weight: bold; color: white; margin-bottom: 0.75rem; font-family: var(--font-display); }
+              .step-content p { color: #d1d5db; line-height: 1.8; }
+              .case-section.highlight { background: linear-gradient(135deg, rgba(78,205,196,0.1) 0%, rgba(51,55,173,0.1) 100%); border-left: 4px solid #4ECDC4; padding: 2rem; border-radius: 1rem; }
+              .result-text { font-size: 1.25rem; line-height: 1.8; color: #e5e7eb; font-weight: 500; }
+              @media (max-width: 768px) {
+                .case-info-grid { grid-template-columns: 1fr; }
+                .problem-solution { grid-template-columns: 1fr; }
+                .step { flex-direction: column; gap: 1rem; }
+                .step-number { font-size: 3rem; }
+              }
+            `}} />
             <div
               className="prose prose-invert max-w-none prose-headings:font-display prose-headings:text-white prose-h2:text-3xl prose-h2:mb-6 prose-h2:mt-12 prose-h3:text-2xl prose-h3:mb-4 prose-h3:mt-8 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-4 prose-li:text-gray-300 prose-ul:list-disc prose-ol:list-decimal prose-strong:text-white prose-strong:font-bold"
               dangerouslySetInnerHTML={{ __html: caseItem.description }}

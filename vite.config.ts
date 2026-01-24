@@ -8,6 +8,8 @@ export default defineConfig(({ mode }) => {
         host: '0.0.0.0',
       },
       plugins: [react()],
+      // Оптимизация изображений
+      assetsInclude: ['**/*.jpg', '**/*.jpeg', '**/*.png', '**/*.webp', '**/*.JPG', '**/*.JPEG', '**/*.PNG'],
       resolve: {
         alias: {
           '@': path.resolve(__dirname, '.'),
