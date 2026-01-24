@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { STATIC_CASES } from '../data/cases';
 import { STATIC_NEWS } from '../data/news';
+import { SERVICES_DATA } from '../constants';
 import { generateSlug } from '../lib/slugify';
 
 /**
  * Dynamic Sitemap generator for SEO
- * This page generates XML sitemap on-the-fly from Firebase data
+ * This page generates XML sitemap on-the-fly from static data
+ * Includes: static pages, services, cases, and news
  * Configure your server to serve this as /sitemap.xml
  */
 const Sitemap: React.FC = () => {
@@ -13,32 +15,16 @@ const Sitemap: React.FC = () => {
   const baseUrl = 'https://tipa.uz';
   const languages = ['ru', 'uz', 'en'];
 
-  console.log('🔵 Sitemap component rendered');
-
-  console.log('Sitemap component rendered');
-
   useEffect(() => {
-    console.log('Sitemap useEffect triggered');
     const generateSitemap = () => {
       try {
-        console.log('Starting sitemap generation...');
         // Используем статичные данные
         const cases = STATIC_CASES;
         const news = STATIC_NEWS;
-        console.log('Static data loaded:', { cases: cases.length, news: news.length });
         
         // Фильтруем только опубликованные
         const publishedCases = cases.filter((item) => item.published === true);
         const publishedNews = news.filter((item) => item.published === true);
-        
-        console.log('Sitemap generation:', {
-          totalCases: cases.length,
-          publishedCases: publishedCases.length,
-          publishedCasesIds: publishedCases.map(c => c.id),
-          totalNews: news.length,
-          publishedNews: publishedNews.length,
-          publishedNewsIds: publishedNews.map(n => n.id)
-        });
         
         const staticPages = [
           { path: '', priority: '1.0', changefreq: 'weekly' },
@@ -146,13 +132,31 @@ const Sitemap: React.FC = () => {
           });
         });
 
-        sitemap += `</urlset>`;
-        
-        console.log('Sitemap generated successfully:', {
-          totalUrls: staticPages.length * languages.length + publishedCases.length * languages.length + publishedNews.length * languages.length,
-          casesUrls: publishedCases.length * languages.length,
-          newsUrls: publishedNews.length * languages.length
+        // Add service pages for each language
+        SERVICES_DATA.forEach((service) => {
+          languages.forEach((lang) => {
+            const url = `${baseUrl}/${lang}/services/${service.id}`;
+            const lastmod = new Date().toISOString().split('T')[0];
+            
+            sitemap += `  <url>
+    <loc>${url}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>`;
+            
+            languages.forEach((altLang) => {
+              const altUrl = `${baseUrl}/${altLang}/services/${service.id}`;
+              sitemap += `
+    <xhtml:link rel="alternate" hreflang="${altLang}" href="${altUrl}" />`;
+            });
+            sitemap += `
+    <xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}/ru/services/${service.id}" />
+  </url>
+`;
+          });
         });
+
+        sitemap += `</urlset>`;
         
         setXml(sitemap);
       } catch (error) {

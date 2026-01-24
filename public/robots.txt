@@ -8,3 +8,23 @@ Sitemap: https://tipa.uz/sitemap.xml
 Disallow: /admin/
 Disallow: /api/
 Disallow: /*.json$
+
+# Allow all important pages
+Allow: /ru/
+Allow: /uz/
+Allow: /en/
+Allow: /ru/services/
+Allow: /uz/services/
+Allow: /en/services/
+Allow: /ru/cases/
+Allow: /uz/cases/
+Allow: /en/cases/
+Allow: /ru/news/
+Allow: /uz/news/
+Allow: /en/news/
+Allow: /ru/about
+Allow: /uz/about
+Allow: /en/about
+Allow: /ru/contact
+Allow: /uz/contact
+Allow: /en/contact
