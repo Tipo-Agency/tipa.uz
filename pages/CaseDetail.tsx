@@ -73,23 +73,29 @@ const CaseDetail: React.FC = () => {
   return (
     <>
       <Seo
-        title={`Кейс: ${caseTitle} | ${caseItem.clientName || 'Типа агентство'}`}
+        title={`${caseTitle} | Кейс от Типа агентство`}
         description={seoDescription}
-        image={caseItem.imageUrl}
+        image={caseItem.imageUrl ? `https://tipa.uz${caseItem.imageUrl}` : undefined}
         structuredData={{
+          '@context': 'https://schema.org',
           '@type': 'CreativeWork',
           name: caseTitle,
-          description: caseItem.description?.replace(/<[^>]+>/g, ' ').slice(0, 300),
-          image: caseItem.imageUrl,
+          description: seoDescription,
+          image: caseItem.imageUrl ? `https://tipa.uz${caseItem.imageUrl}` : undefined,
           creator: {
             '@type': 'Organization',
-            name: 'Типа агентство'
+            name: 'Типа агентство',
+            url: 'https://tipa.uz'
           },
+          datePublished: caseItem.createdAt,
           ...(caseItem.clientName && {
             client: {
               '@type': 'Organization',
               name: caseItem.clientName
             }
+          }),
+          ...(caseItem.websiteUrl && {
+            url: caseItem.websiteUrl
           })
         }}
       />
@@ -100,17 +106,35 @@ const CaseDetail: React.FC = () => {
 
           {/* Layout: Фото и заголовок рядом */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-12 items-start">
-            {/* Левая колонка: Фото или Заголовок (чередуется) */}
-            {caseItem.imageUrl ? (
+            {/* Левая колонка: Галерея изображений */}
+            {(caseItem.imageUrl || (caseItem.galleryImages && caseItem.galleryImages.length > 0)) ? (
               <div className="order-2 lg:order-1">
-                <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-black">
-                  <img
-                    src={caseItem.imageUrl}
-                    alt={`Кейс ${caseTitle} от Типа агентство`}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
+                {/* Главное изображение */}
+                {caseItem.imageUrl && (
+                  <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-black mb-4">
+                    <img
+                      src={caseItem.imageUrl}
+                      alt={`Кейс ${caseTitle} от Типа агентство`}
+                      className="w-full h-full object-cover"
+                      loading="eager"
+                    />
+                  </div>
+                )}
+                {/* Галерея дополнительных изображений */}
+                {caseItem.galleryImages && caseItem.galleryImages.length > 0 && (
+                  <div className={`grid gap-4 ${caseItem.galleryImages.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+                    {caseItem.galleryImages.map((img, idx) => (
+                      <div key={idx} className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-black">
+                        <img
+                          src={img}
+                          alt={`${caseTitle} - изображение ${idx + 1}`}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             ) : (
               <div className="order-2 lg:order-1"></div>
@@ -177,7 +201,7 @@ const CaseDetail: React.FC = () => {
         <Section className="bg-dark-surface py-16">
           <div className="max-w-4xl mx-auto">
             <div
-              className="prose prose-invert max-w-none prose-headings:font-display prose-a:text-primary prose-p:text-gray-300 prose-li:text-gray-300"
+              className="prose prose-invert max-w-none prose-headings:font-display prose-headings:text-white prose-h2:text-3xl prose-h2:mb-6 prose-h2:mt-12 prose-h3:text-2xl prose-h3:mb-4 prose-h3:mt-8 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-4 prose-li:text-gray-300 prose-ul:list-disc prose-ol:list-decimal prose-strong:text-white prose-strong:font-bold"
               dangerouslySetInnerHTML={{ __html: caseItem.description }}
             />
           </div>

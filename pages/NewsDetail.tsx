@@ -79,22 +79,24 @@ const NewsDetail: React.FC = () => {
   return (
     <>
       <Seo 
-        title={item.title}
+        title={`${item.title} | Типа агентство`}
         description={seoDescription}
         type="article"
         publishedTime={publishedDate}
         modifiedTime={item.createdAt}
-        image={item.imageUrl}
+        image={item.imageUrl ? `https://tipa.uz${item.imageUrl}` : undefined}
         structuredData={{
+          '@context': 'https://schema.org',
           '@type': 'BlogPosting',
           headline: item.title,
-          description: excerpt,
-          image: item.imageUrl ? [item.imageUrl] : undefined,
+          description: seoDescription,
+          image: item.imageUrl ? [`https://tipa.uz${item.imageUrl}`] : undefined,
           datePublished: publishedDate,
           dateModified: item.createdAt || publishedDate,
           author: {
             '@type': 'Organization',
-            name: 'Типа агентство'
+            name: 'Типа агентство',
+            url: 'https://tipa.uz'
           },
           publisher: {
             '@type': 'Organization',
@@ -106,7 +108,7 @@ const NewsDetail: React.FC = () => {
           },
           mainEntityOfPage: {
             '@type': 'WebPage',
-            '@id': `https://tipa.uz/news/${slug}`
+            '@id': `https://tipa.uz/${language}/news/${slug}`
           }
         }}
       />
@@ -166,7 +168,7 @@ const NewsDetail: React.FC = () => {
       {/* Содержание статьи */}
       {item.content && (
         <Section className="py-16">
-          <article className="prose prose-invert max-w-4xl mx-auto prose-headings:font-display prose-a:text-primary prose-p:text-gray-300 prose-li:text-gray-300">
+          <article className="prose prose-invert max-w-4xl mx-auto prose-headings:font-display prose-headings:text-white prose-h2:text-3xl prose-h2:mb-6 prose-h2:mt-12 prose-h2:font-bold prose-h3:text-2xl prose-h3:mb-4 prose-h3:mt-8 prose-h3:font-bold prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-4 prose-li:text-gray-300 prose-ul:list-disc prose-ol:list-decimal prose-strong:text-white prose-strong:font-bold prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-400">
             <div
               dangerouslySetInnerHTML={{ __html: item.content }}
             />

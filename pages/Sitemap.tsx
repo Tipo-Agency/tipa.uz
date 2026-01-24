@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { getSiteData } from '../services/siteDataService';
+import { STATIC_CASES } from '../data/cases';
+import { STATIC_NEWS } from '../data/news';
 import { generateSlug } from '../lib/slugify';
 
 /**
@@ -18,22 +19,17 @@ const Sitemap: React.FC = () => {
 
   useEffect(() => {
     console.log('Sitemap useEffect triggered');
-    const generateSitemap = async () => {
+    const generateSitemap = () => {
       try {
         console.log('Starting sitemap generation...');
-        const { cases, news } = await getSiteData();
-        console.log('getSiteData completed:', { cases: cases.length, news: news.length });
+        // Используем статичные данные
+        const cases = STATIC_CASES;
+        const news = STATIC_NEWS;
+        console.log('Static data loaded:', { cases: cases.length, news: news.length });
         
-        console.log('Raw data loaded:', {
-          casesCount: cases.length,
-          newsCount: news.length,
-          firstCase: cases[0] ? { id: cases[0].id, title: cases[0].title, published: cases[0].published } : null,
-          firstNews: news[0] ? { id: news[0].id, title: news[0].title, published: news[0].published } : null
-        });
-        
-        // getSiteData already filters by published === true, so we use all items
-        const publishedCases = cases;
-        const publishedNews = news;
+        // Фильтруем только опубликованные
+        const publishedCases = cases.filter((item) => item.published === true);
+        const publishedNews = news.filter((item) => item.published === true);
         
         console.log('Sitemap generation:', {
           totalCases: cases.length,

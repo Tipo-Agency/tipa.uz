@@ -205,79 +205,81 @@ const Cases: React.FC = () => {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {filteredCases.map((item) => {
-              const resolvedTags = item.tags
-                ?.map((id) => tagsMap.get(id))
-                .filter(Boolean) as Tag[];
+                  const resolvedTags = item.tags
+                    ?.map((id) => tagsMap.get(id))
+                    .filter(Boolean) as Tag[];
 
-              const caseLink = getCaseLink(item, language);
-              return (
-                <Link
-                  to={caseLink}
-                  key={item.id}
-                  className="group bg-dark-surface border border-white/5 rounded-2xl overflow-hidden hover:border-primary/40 transition-all flex flex-col"
-                >
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    {item.imageUrl ? (
-                      <img
-                        src={item.imageUrl}
-                        alt={`Кейс ${item.title}${item.clientName ? ` для ${item.clientName}` : ''} от Типа агентство`}
-                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-dark via-primary/15 to-dark" />
-                    )}
-                  </div>
-                  <div className="p-6 flex flex-col flex-1">
-                    {resolvedTags && resolvedTags.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mb-3">
-                        {resolvedTags.slice(0, 3).map((tag) => {
-                          const tagSlug = createTagSlug(tag.name);
-                          return (
-                            <button
-                              key={tag.id}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleTagFilter(tagSlug);
-                                // Прокручиваем к началу списка кейсов
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
-                              }}
-                              className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-white/5 border border-white/10 text-gray-200 hover:bg-white/10 transition-all cursor-pointer"
-                              style={tag.color ? { borderColor: tag.color, color: tag.color } : undefined}
-                            >
-                              {tag.name}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
-                    <h2 className="font-display font-bold text-2xl text-white mb-2 group-hover:text-primary transition-colors">
-                      {item.title || item.description?.slice(0, 50) || 'Без названия'}
-                    </h2>
-                    {item.clientName && (
-                      <p className="text-gray-400 text-sm mb-4">
-                        Клиент: <span className="text-white">{item.clientName}</span>
-                      </p>
-                    )}
-                    <div className="mt-auto flex items-center justify-between pt-4 border-t border-white/10 text-xs text-gray-500">
-                      <span className="uppercase tracking-widest font-bold">
-                        Смотреть кейс →
-                      </span>
-                      <div className="flex gap-3">
-                        {item.websiteUrl && (
-                          <span className="text-primary">Сайт</span>
-                        )}
-                        {item.instagramUrl && (
-                          <span className="text-accent-turquoise">Instagram</span>
+                  const caseLink = getCaseLink(item, language);
+                  return (
+                    <Link
+                      to={caseLink}
+                      key={item.id}
+                      className="group bg-dark-surface border border-white/5 rounded-2xl overflow-hidden hover:border-primary/40 transition-all flex flex-col"
+                    >
+                      <div className="relative aspect-[16/10] overflow-hidden">
+                        {item.imageUrl ? (
+                          <img
+                            src={item.imageUrl}
+                            alt={`Кейс ${item.title}${item.clientName ? ` для ${item.clientName}` : ''} от Типа агентство`}
+                            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-dark via-primary/15 to-dark" />
                         )}
                       </div>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+                      <div className="p-6 flex flex-col flex-1">
+                        {resolvedTags && resolvedTags.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mb-3">
+                            {resolvedTags.slice(0, 3).map((tag) => {
+                              const tagSlug = createTagSlug(tag.name);
+                              return (
+                                <button
+                                  key={tag.id}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    handleTagFilter(tagSlug);
+                                    // Прокручиваем к началу списка кейсов
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                  }}
+                                  className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-white/5 border border-white/10 text-gray-200 hover:bg-white/10 transition-all cursor-pointer"
+                                  style={tag.color ? { borderColor: tag.color, color: tag.color } : undefined}
+                                >
+                                  {tag.name}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+                        <h2 className="font-display font-bold text-2xl text-white mb-2 group-hover:text-primary transition-colors">
+                          {item.title || item.description?.slice(0, 50) || 'Без названия'}
+                        </h2>
+                        {item.clientName && (
+                          <p className="text-gray-400 text-sm mb-4">
+                            Клиент: <span className="text-white">{item.clientName}</span>
+                          </p>
+                        )}
+                        <div className="mt-auto flex items-center justify-between pt-4 border-t border-white/10 text-xs text-gray-500">
+                          <span className="uppercase tracking-widest font-bold">
+                            Смотреть кейс →
+                          </span>
+                          <div className="flex gap-3">
+                            {item.websiteUrl && (
+                              <span className="text-primary">Сайт</span>
+                            )}
+                            {item.instagramUrl && (
+                              <span className="text-accent-turquoise">Instagram</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </>
         )}
       </Section>
 
