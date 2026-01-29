@@ -21,7 +21,7 @@ export type AnalyticsEvent =
   | 'conversion_signup';
 
 export interface AnalyticsEventParams {
-  event_name: string;
+  event_name?: string; // при вызове trackEvent(eventName, params) подставляется из первого аргумента
   event_category?: string;
   event_label?: string;
   value?: number;
@@ -117,6 +117,22 @@ export function trackLeadSubmit(): void {
       }
     } catch (error) {
       console.error('❌ Yandex.Metrika trackLeadSubmit error:', error);
+    }
+  }
+}
+
+/** Цели квиза в Яндекс.Метрике (отдельно от lead_submit для конверсии квиза) */
+export function trackQuizGoal(goalName: 'quiz_show' | 'quiz_start' | 'quiz_step_1' | 'quiz_step_2' | 'quiz_step_3' | 'quiz_step_4' | 'quiz_offer_view' | 'quiz_lead_submit' | 'quiz_widget_click' | 'quiz_close'): void {
+  if (typeof window === 'undefined') return;
+  if (isYandexMetrikaAvailable()) {
+    try {
+      const metrikaId = 106244564;
+      (window as any).ym(metrikaId, 'reachGoal', goalName);
+      if (process.env.NODE_ENV === 'development') {
+        console.log('✅ Yandex.Metrika quiz goal:', goalName);
+      }
+    } catch (error) {
+      console.error('❌ Yandex.Metrika trackQuizGoal error:', error);
     }
   }
 }
@@ -295,13 +311,13 @@ export function trackFormSubmit(formName: string, sourceSection?: string, additi
  */
 export function trackConversion(
   conversionType: 'lead' | 'contact' | 'signup',
-  params?: Record<string, any>
+  params?: Record<string, any> & { form_name?: string }
 ): void {
   if (typeof window === 'undefined') return;
   
-  const conversionParams = {
+  const conversionParams: Record<string, any> = {
     conversion_type: conversionType,
-    value: conversionType === 'lead' ? 1000 : conversionType === 'contact' ? 500 : 100, // Примерные значения в условных единицах
+    value: conversionType === 'lead' ? 1000 : conversionType === 'contact' ? 500 : 100,
     currency: 'UZS',
     timestamp: new Date().toISOString(),
     url: window.location.href,

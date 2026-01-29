@@ -7,6 +7,7 @@ import { CONTACT_INFO, Icons } from '../../constants';
 import { CookieConsent } from '../ui/CookieConsent';
 import { LeadPopup } from '../ui/LeadPopup';
 import { ThankYouPopup } from '../ui/ThankYouPopup';
+import { QuizWidget } from '../ui/QuizWidget';
 import { useModal } from '../../context/ModalContext';
 import { trackSocialClick, trackCTAClick } from '../../lib/analytics';
 import { useLocalizedLink } from '../../lib/useLocalizedLink';
@@ -258,6 +259,7 @@ const Layout: React.FC = () => {
       <CookieConsent />
       <LeadPopup />
       <ThankYouPopup />
+      <QuizWidget />
     </div>
   );
 };

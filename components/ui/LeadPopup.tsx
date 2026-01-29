@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useModal } from '../../context/ModalContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { createLead } from '../../services/leadService';
-import { trackFormSubmit, trackLeadSubmit } from '../../lib/analytics';
+import { trackFormSubmit, trackLeadSubmit, trackSocialClick } from '../../lib/analytics';
 import { Link } from 'react-router-dom';
+import { CONTACT_INFO } from '../../constants';
 
 // Список стран с кодами - будет переведен внутри компонента
 const getCountries = (t: (key: string) => string) => [
@@ -24,8 +25,7 @@ export const LeadPopup: React.FC = () => {
     fullName: '', 
     phone: '', 
     phoneCountryCode: '+998',
-    phoneCountry: 'UZ', // Сохраняем код страны для различения стран с одинаковым dialCode
-    task: ''
+    phoneCountry: 'UZ'
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showCountrySelect, setShowCountrySelect] = useState(false);
@@ -156,15 +156,12 @@ export const LeadPopup: React.FC = () => {
         lastName: lastName,
         phone: formState.phone.trim(),
         phoneCountryCode: formState.phoneCountryCode,
-        task: formState.task.trim() || undefined,
         sourceSection: sourceSection || 'unknown',
       });
 
-      // Track form submission (не блокируем успех формы, если аналитика упадет)
       try {
         trackFormSubmit('lead_form', sourceSection || 'unknown', {
           phone_country_code: formState.phoneCountryCode,
-          has_task: !!formState.task.trim(),
           lead_id: leadId
         });
         
@@ -182,8 +179,7 @@ export const LeadPopup: React.FC = () => {
         fullName: '', 
         phone: '', 
         phoneCountryCode: '+998',
-        phoneCountry: 'UZ',
-        task: ''
+        phoneCountry: 'UZ'
       });
       
       // Закрываем модалку формы и открываем попап "Спасибо"
@@ -356,18 +352,21 @@ export const LeadPopup: React.FC = () => {
                 </div>
               </div>
 
-              {/* Задача (необязательное) */}
-              <div>
-                <textarea 
-                  rows={3}
-                  placeholder={t('lead.task_placeholder')}
-                  className="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-primary focus:outline-none focus:bg-white/10 transition-all resize-none"
-                  value={formState.task}
-                  onChange={e => setFormState({...formState, task: e.target.value})}
-                />
-              </div>
-
             </div>
+
+            {/* Кнопка Telegram */}
+            <a
+              href={CONTACT_INFO.socials.telegram}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackSocialClick('telegram', { location: 'lead_popup' })}
+              className="flex items-center justify-center gap-3 w-full py-4 rounded-xl border-2 border-[#2AABEE]/50 text-[#2AABEE] hover:bg-[#2AABEE]/10 hover:border-[#2AABEE] transition-all font-display font-bold text-sm uppercase tracking-wider"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.258.02.39-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+              </svg>
+              {t('lead.write_telegram')}
+            </a>
 
             {/* Текст о согласии с политикой */}
             <p className="text-xs text-gray-500 text-center">

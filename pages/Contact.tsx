@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Section } from '../components/ui/Section';
 import { useLanguage } from '../context/LanguageContext';
-import { CONTACT_INFO } from '../constants';
+import { CONTACT_INFO, Icons } from '../constants';
+import { trackSocialClick } from '../lib/analytics';
 import { Breadcrumbs } from '../components/ui/Breadcrumbs';
 import { Seo } from '../components/ui/Seo';
 import { useModal } from '../context/ModalContext';
@@ -27,8 +28,7 @@ const Contact: React.FC = () => {
     fullName: '', 
     phone: '', 
     phoneCountryCode: '+998',
-    phoneCountry: 'UZ',
-    task: '' 
+    phoneCountry: 'UZ'
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string>('');
@@ -127,15 +127,12 @@ const Contact: React.FC = () => {
         lastName: lastName,
         phone: formState.phone.trim(),
         phoneCountryCode: formState.phoneCountryCode,
-        task: formState.task.trim() || undefined,
         sourceSection: 'contact_page',
       });
 
-      // Track form submission
       try {
         trackFormSubmit('contact_form', 'contact_page', {
           phone_country_code: formState.phoneCountryCode,
-          has_task: !!formState.task.trim(),
           lead_id: leadId
         });
         
@@ -152,8 +149,7 @@ const Contact: React.FC = () => {
         fullName: '', 
         phone: '', 
         phoneCountryCode: '+998',
-        phoneCountry: 'UZ',
-        task: '' 
+        phoneCountry: 'UZ'
       });
       
       // Открываем попап "Спасибо" через небольшую задержку для плавности
@@ -311,16 +307,16 @@ const Contact: React.FC = () => {
                          </div>
                      </div>
 
-                     <div className="group">
-                         <label className="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider group-focus-within:text-primary transition-colors">{t('contact.form_task')}</label>
-                         <textarea 
-                            rows={4}
-                            className="w-full px-0 py-3 bg-transparent border-b border-gray-700 text-white placeholder-gray-600 focus:border-primary focus:outline-none transition-all text-lg resize-none"
-                            placeholder={t('contact.form_task')}
-                            value={formState.task}
-                            onChange={e => setFormState({...formState, task: e.target.value})}
-                         />
-                     </div>
+                     <a
+                         href={CONTACT_INFO.socials.telegram}
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         onClick={() => trackSocialClick('telegram', { location: 'contact_page' })}
+                         className="flex items-center justify-center gap-3 w-full py-4 rounded-full border-2 border-[#2AABEE]/50 text-[#2AABEE] hover:bg-[#2AABEE]/10 hover:border-[#2AABEE] transition-all font-display font-bold text-sm tracking-widest uppercase mb-6"
+                     >
+                         <Icons.Telegram />
+                         {t('contact.write_telegram')}
+                     </a>
 
                      <button 
                         type="submit" 
