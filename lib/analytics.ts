@@ -232,25 +232,22 @@ export function trackEvent(
   params?: AnalyticsEventParams
 ): void {
   if (typeof window === 'undefined') return;
-  
-  const eventParams = {
-    event_name: eventName,
-    ...params,
-    timestamp: new Date().toISOString(),
-    url: window.location.href,
-    path: window.location.pathname,
-  };
-  
-  // Отправляем во все системы
-  trackYandexMetrika(eventName, eventParams);
-  trackGTM(eventName, eventParams);
-  trackMetaPixel(eventName, eventParams);
-  
-  // Логируем в консоль для отладки (только в dev режиме)
-  if (process.env.NODE_ENV === 'development') {
+  try {
+    const eventParams = {
+      event_name: eventName,
+      ...params,
+      timestamp: new Date().toISOString(),
+      url: window.location.href,
+      path: window.location.pathname,
+    };
+    trackYandexMetrika(eventName, eventParams);
+    trackGTM(eventName, eventParams);
+    trackMetaPixel(eventName, eventParams);
     if (process.env.NODE_ENV === 'development') {
       console.log('📊 Analytics Event:', eventName, eventParams);
     }
+  } catch {
+    // Аналитика не должна ломать приложение
   }
 }
 

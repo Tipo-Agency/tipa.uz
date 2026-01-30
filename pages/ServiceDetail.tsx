@@ -1941,19 +1941,22 @@ const GenericServiceView: React.FC<{ service: any }> = ({ service }) => {
 
 // --- MAIN WRAPPER ---
 const ServiceDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id, lang } = useParams<{ id: string; lang?: string }>();
   const service = SERVICES_DATA.find((s) => s.id === id);
   const { getLocalized } = useLanguage();
 
-  // Track service view
   React.useEffect(() => {
     if (service) {
-      trackServiceView(service.id, getLocalized(service.title));
+      try {
+        trackServiceView(service.id, getLocalized(service.title));
+      } catch {
+        // аналитика не должна ломать страницу
+      }
     }
   }, [service, getLocalized]);
 
   if (!service) {
-    return <Navigate to="/services" replace />;
+    return <Navigate to={`/${lang || 'ru'}/services`} replace />;
   }
 
   switch (service.id) {

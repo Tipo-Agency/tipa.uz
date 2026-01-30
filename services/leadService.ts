@@ -19,14 +19,6 @@ export interface LeadData {
   utm_content?: string;
 }
 
-const assertDb = () => {
-  if (!db) {
-    console.error('❌ Firestore is not initialized. Check firebase.ts configuration.');
-    throw new Error('Firestore is not initialized');
-  }
-  return db;
-};
-
 /**
  * Удаляет все undefined поля из объекта
  * Firestore не поддерживает undefined значения
@@ -42,8 +34,14 @@ function removeUndefinedFields<T extends Record<string, any>>(obj: T): Partial<T
 }
 
 export async function createLead(data: Omit<LeadData, 'createdAt'>): Promise<string> {
-  const firestore = assertDb();
-  
+  if (!db) {
+    const msg = 'Сервис временно недоступен. Попробуйте позже или напишите в Telegram.';
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('Firestore not initialized');
+    }
+    return Promise.reject(new Error(msg));
+  }
+  const firestore = db;
   try {
     // Формируем полный номер телефона с кодом страны
     const fullPhone = data.phoneCountryCode + ' ' + data.phone.replace(/\s/g, '');
@@ -74,25 +72,10 @@ export async function createLead(data: Omit<LeadData, 'createdAt'>): Promise<str
     }
     
     return docRef.id;
-  } catch (error: any) {
-    // Детальное логирование ошибки для диагностики
-    console.error('❌ Error creating lead:', error);
-    
-    if (error?.code) {
-      console.error('   Error code:', error.code);
+  } catch (error: unknown) {
+    if (process.env.NODE_ENV === 'development' && error instanceof Error) {
+      console.error('Error creating lead:', error.message);
     }
-    if (error?.message) {
-      console.error('   Error message:', error.message);
-    }
-    if (error?.stack) {
-      console.error('   Stack trace:', error.stack);
-    }
-    
-    // Проверяем, что db инициализирован
-    if (!db) {
-      console.error('   ⚠️ Firestore db is null! Check firebase.ts initialization.');
-    }
-    
     throw error;
   }
 }

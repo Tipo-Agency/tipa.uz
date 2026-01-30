@@ -21,24 +21,36 @@ const RootRedirect = () => {
   return <Navigate to="/ru" replace />;
 };
 
-// Scroll to top on route change and track page views
+// Scroll to top on route change and track page views (аналитика не должна ломать приложение)
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Track page view on route change
-    trackPageView(document.title, { path: pathname });
+    try {
+      trackPageView(document.title, { path: pathname });
+    } catch {
+      // игнорируем ошибки аналитики
+    }
   }, [pathname]);
   return null;
 };
 
 const App: React.FC = () => {
-  // Initialize scroll tracking and UTM tracking once on app mount
   useEffect(() => {
-    initScrollTracking();
-    initUTMTracking();
-    // Track initial page view
-    trackPageView(document.title);
+    try {
+      initUTMTracking();
+    } catch {
+      // UTM не должен ломать загрузку
+    }
+    try {
+      trackPageView(document.title);
+    } catch {
+      // аналитика не должна ломать загрузку
+    }
+    const cleanupScroll = initScrollTracking();
+    return () => {
+      if (typeof cleanupScroll === 'function') cleanupScroll();
+    };
   }, []);
 
   return (

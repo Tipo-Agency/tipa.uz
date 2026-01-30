@@ -52,49 +52,27 @@ export interface SiteData {
   tags: Tag[];
 }
 
-const assertDb = () => {
-  if (!db) {
-    console.error("❌ Firestore is not initialized. Check firebase.ts configuration.");
-    throw new Error("Firestore is not initialized");
-  }
-  return db;
-};
-
 export async function getSiteData(): Promise<SiteData> {
-  const firestore = assertDb();
-  
-  if (process.env.NODE_ENV === 'development') {
-    console.log("🔍 Attempting to load data from Firestore...");
-    console.log("📦 Collections to load: partnerLogos (news, cases, tags are static)");
-  }
-
-  // Partner logos
-  let partnerLogos: PartnerLogo[] = [];
-  try {
-    const logosSnapshot = await getDocs(collection(firestore, "partnerLogos"));
-    partnerLogos = logosSnapshot.docs
-      .map((doc) => ({
-        id: doc.id,
-        ...(doc.data() as Omit<PartnerLogo, "id">),
-      }))
-      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-  } catch (error: any) {
-    console.error("❌ Error loading partner logos:", error);
-    if (error?.code === 'permission-denied') {
-      console.error("🔒 PERMISSION DENIED: Firestore rules need to allow public read access.");
-      console.error("📝 Add this to Firestore Rules:");
-      console.error(`
-        match /partnerLogos/{document=**} {
-          allow read: if true;
-        }
-      `);
-    }
-  }
-
-  // News and Cases are now static - loaded from local files
   const news: News[] = STATIC_NEWS;
   const cases: CaseItem[] = STATIC_CASES;
   const tags: Tag[] = STATIC_TAGS;
+
+  let partnerLogos: PartnerLogo[] = [];
+  if (db) {
+    try {
+      const logosSnapshot = await getDocs(collection(db, "partnerLogos"));
+      partnerLogos = logosSnapshot.docs
+        .map((doc) => ({
+          id: doc.id,
+          ...(doc.data() as Omit<PartnerLogo, "id">),
+        }))
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    } catch (error: unknown) {
+      if (process.env.NODE_ENV === 'development') {
+        console.warn("Partner logos load failed, using empty list:", error);
+      }
+    }
+  }
 
   return { partnerLogos, news, cases, tags };
 }
